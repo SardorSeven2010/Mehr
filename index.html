@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="uz" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>MEHR — Xayriya platformasi va ta'lim portali</title>
+  <meta name="description" content="MEHR — Ōzbekistondagi ehtiyojmand yoşlarning zamonaviy ilm olişi, maktablarni jihozlaş va bepul onlayn kurslar orqali minglab ōquvçilarni qōllab-quvvatlaş ekotizimi." />
+  <meta name="theme-color" content="#059669" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MEHR" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <script>
+    // Sahifa çizilişidan oldin mavzuni (yorqin/qoronḡu) qōllaş — "miltillaş"ning oldini oladi
+    (function () {
+      try {
+        var s = JSON.parse(localStorage.getItem('mehr:v1') || '{}');
+        var dark = s.theme ? s.theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+  <a href="#mainContent" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold">Asosiy mazmunga ōtiş</a>
+
+  <!-- ==================== TOP NAVBAR ==================== -->
+  <header class="sticky top-0 z-40 glass-card bg-white/85 dark:bg-slate-900/85 border-b border-slate-200/80 dark:border-slate-800 transition-colors pt-[env(safe-area-inset-top)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+      <!-- Brand Logo: MEHR -->
+      <a href="#home" data-nav="home" class="flex items-center gap-3 group min-w-0">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-hand-holding-heart text-xl"></i>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-xl sm:text-2xl font-black tracking-wider bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600 dark:from-emerald-400 dark:to-indigo-400 bg-clip-text text-transparent">MEHR</span>
+            <span class="hidden min-[400px]:inline xl:hidden px-2 py-0.5 text-[10px] font-extrabold uppercase rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300/50">Uzbekistan</span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block xl:hidden truncate">Xayriya platformasi va ta'lim portali</p>
+        </div>
+      </a>
+
+      <!-- Desktop Menu -->
+      <nav id="desktopNav" aria-label="Asosiy menyu" class="hidden xl:flex items-center gap-0.5 bg-slate-100 dark:bg-slate-800/90 p-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60"></nav>
+
+      <!-- Right Action Buttons -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" data-install class="hidden items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 text-xs font-bold transition-all cursor-pointer" title="Ilovani qurilmaga ōrnatiş">
+          <i class="fa-solid fa-download text-emerald-600 dark:text-emerald-400"></i>
+          <span class="hidden lg:inline">Ōrnatiş</span>
+        </button>
+
+        <button id="themeToggleBtn" type="button" class="flex items-center gap-2 px-3 sm:px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-300 border border-slate-200/80 dark:border-slate-700 transition-all cursor-pointer" title="Yorqin / Qoronḡu rejimni almaştiriş" aria-label="Yorqin / Qoronḡu rejimni almaştiriş">
+          <i id="themeIcon" class="fa-solid fa-moon text-indigo-600"></i>
+          <span id="themeText" class="hidden sm:inline xl:hidden text-xs font-bold">Qoronḡu</span>
+        </button>
+
+        <button type="button" data-donate="kompyuter" class="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-500/20 transition-all cursor-pointer">
+          <i class="fa-solid fa-credit-card"></i>
+          <span>Tōlov oynasi</span>
+        </button>
+
+        <button id="navUserBtn" type="button" class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-indigo-500/20 transition-all cursor-pointer max-w-[11rem] sm:max-w-[16rem]">
+          <i id="navUserIcon" class="fa-solid fa-user-plus"></i>
+          <span id="navUserText" class="truncate hidden min-[420px]:inline">Rōyxatdan ōtiş</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile & Tablet Navigation Bar -->
+    <nav id="mobileNav" aria-label="Bōlimlar" class="xl:hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar px-4 py-2.5 bg-slate-100/90 dark:bg-slate-900 border-t border-slate-200/60 dark:border-slate-800 text-xs"></nav>
+
+    <div id="offlineBar" class="hidden items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-slate-950 text-xs font-bold">
+      <i class="fa-solid fa-wifi"></i>
+      <span>Oflayn rejim: internet aloqasi yōq. Ilova saqlangan ma'lumotlar bilan işlamoqda.</span>
+    </div>
+  </header>
+
+  <!-- ==================== HERO ==================== -->
+  <section id="hero" class="relative overflow-hidden bg-slate-900">
+    <div id="heroBackground" class="absolute inset-0 bg-cover bg-center transition-[background-image] duration-700 scale-105"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/85 to-indigo-950/80"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-6 text-white">
+          <div class="inline-flex items-start gap-2 px-3.5 py-1.5 rounded-2xl sm:rounded-full bg-white/15 glass-card border border-white/20 text-emerald-300 text-xs font-bold">
+            <i class="fa-solid fa-star text-amber-400 mt-0.5"></i>
+            <span>"MEHR" — Asosçi: Narzullayeva Nilufar Nuraliyevna • IT va SI koordinatorlari: Madiyorov S.F. va Hotamov U.U.</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">MEHR</span> — Xayriya platformasi va zamonaviy ta'lim portali
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-200/90 max-w-2xl leading-relaxed">
+            <strong>"MEHR"</strong> loyihasi — <strong>Narzullayeva Nilufar Nuraliyevna</strong> taşabbusi bilan asos solingan hamda IT va sun'iy intellekt koordinatorlari <strong>Madiyorov Sardor Firdavsoviç</strong> va <strong>Hotamov Uluḡbek Umedoviç</strong> tahririyati ostida işlab çiqilgan, Ōzbekistondagi ehtiyojmand yoşlarning zamonaviy ilm olişi, maktablarni jihozlaş va bepul onlayn kurslar orqali minglab ōquvçilarni qōllab-quvvatlaş ekotizimidir.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <button type="button" data-donate="umumiy" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold shadow-xl shadow-emerald-500/25 transition-all cursor-pointer">
+              <i class="fa-solid fa-heart"></i>
+              <span>MEHR orqali ehson qiliş</span>
+            </button>
+            <button type="button" data-nav="talim" class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 glass-card border border-white/25 text-white font-bold transition-all cursor-pointer">
+              <i class="fa-solid fa-book-open"></i>
+              <span>Bepul kurslarni kōriş</span>
+            </button>
+            <button type="button" data-auth class="flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-indigo-600/80 hover:bg-indigo-600 glass-card border border-indigo-400/30 text-white font-semibold text-sm transition-all cursor-pointer">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Rōyxatdan ōtiş</span>
+            </button>
+          </div>
+
+          <dl id="heroStats" class="grid grid-cols-3 gap-3 max-w-xl pt-2"></dl>
+        </div>
+
+        <!-- Hero Quick Donation Box -->
+        <div class="lg:col-span-5">
+          <div class="rounded-3xl bg-white/10 dark:bg-slate-900/65 glass-card border border-white/20 p-5 sm:p-6 text-white shadow-2xl space-y-5">
+            <div class="flex items-center justify-between border-b border-white/15 pb-4">
+              <div>
+                <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold">MEHR Tezkor Tōlov Oynasi</span>
+                <h2 class="text-lg font-bold mt-0.5">Şaffof va komissiyasiz ehson</h2>
+              </div>
+              <i class="fa-solid fa-shield-heart text-3xl text-emerald-400"></i>
+            </div>
+
+            <div>
+              <span class="text-xs text-slate-300 block mb-2">Xayriya miqdorini tanlang (sōm):</span>
+              <div id="heroAmounts" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+            </div>
+
+            <div>
+              <label for="heroFund" class="text-xs text-slate-300 block mb-1.5">MEHR maqsadli fondini tanlang:</label>
+              <select id="heroFund" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/85 border border-white/20 text-white text-sm focus:outline-none focus:border-emerald-400"></select>
+            </div>
+
+            <button id="heroDonateBtn" type="button" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
+              <i class="fa-solid fa-wallet"></i>
+              <span id="heroDonateBtnLabel">50 000 sōm tōlovga ōtiş</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main id="mainContent" class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 space-y-16 sm:space-y-20 flex-1">
+
+    <!-- ==================== 1. ASOSÇI ==================== -->
+    <section id="sec-asoschi" class="page-section scroll-mt-36 relative rounded-3xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl">
+      <div class="h-2.5 w-full bg-gradient-to-r from-sky-500 via-white to-emerald-500 border-y border-rose-500/40"></div>
+
+      <div class="p-6 sm:p-10 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div class="lg:col-span-4 flex flex-col items-center">
+          <div data-photo="founder" class="relative w-64 sm:w-72 aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border-4 border-blue-900/30 dark:border-blue-500/40 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-950 group">
+            <img data-photo-img alt="Asosçi Narzullayeva Nilufar Nuraliyevna" class="hidden w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" />
+            <div data-photo-fallback class="w-full h-full flex flex-col items-center justify-between p-6 text-center relative overflow-hidden text-white">
+              <div class="absolute -left-6 -top-8 w-36 h-96 rotate-12 opacity-90 pointer-events-none shadow-xl">
+                <div class="h-1/3 bg-sky-500"></div>
+                <div class="h-1.5 bg-rose-600"></div>
+                <div class="h-1/3 bg-white"></div>
+                <div class="h-1.5 bg-rose-600"></div>
+                <div class="h-1/3 bg-emerald-500"></div>
+              </div>
+              <div class="relative z-10 mt-4 w-28 h-28 rounded-full bg-gradient-to-br from-blue-700 to-indigo-900 text-white flex items-center justify-center shadow-2xl border-4 border-white/90">
+                <span class="text-3xl font-extrabold">NN</span>
+              </div>
+              <div class="relative z-10 bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white glass-card p-4 rounded-2xl border border-blue-300/40 dark:border-slate-700 shadow-xl w-full">
+                <div class="text-xs font-bold uppercase text-blue-700 dark:text-emerald-400">"MEHR" Loyihasi Asosçisi</div>
+                <div class="text-sm font-extrabold mt-0.5">Narzullayeva Nilufar Nuraliyevna</div>
+              </div>
+            </div>
+            <label class="photo-upload absolute top-3 right-3 px-3 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white glass-card text-xs font-bold flex items-center gap-1.5 shadow-lg transition-all cursor-pointer" title="Asosçi suratini tanlaş">
+              <i class="fa-solid fa-camera text-emerald-400"></i>
+              <span>Suratni tanlaş</span>
+              <input data-photo-input type="file" accept="image/*" class="sr-only" />
+            </label>
+          </div>
+
+          <div class="mt-4 text-center">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 text-xs font-bold">
+              <i class="fa-solid fa-circle-check"></i>
+              "MEHR" Loyihasi Asosçisi
+            </span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8 space-y-6">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              <i class="fa-solid fa-crown"></i>
+              <span>"MEHR" Platformasi Asosçisi va Rahbari</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Narzullayeva Nilufar Nuraliyevna</h2>
+            <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">"MEHR" xayriya platformasi va ta'lim portali asosçisi hamda loyiha taşabbuskori</p>
+          </div>
+
+          <blockquote class="relative p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border-l-4 border-emerald-500 space-y-3">
+            <p class="text-sm sm:text-base italic text-slate-700 dark:text-slate-200 leading-relaxed">
+              "Bizning 'MEHR' loyihasini barpo etişdan eng uluḡ maqsadimiz — Ōzbekistonning har bir gōşasidagi bilimga çanqoq yoşlarni qōllab-quvvatlaş, ehtiyojmand oilalar farzandlariga zamonaviy ta'lim eşiklarini oçiş va saxovatpeşa insonlarning mehrini şaffof tizim orqali maktablarga yetkazişdir. Zero, ta'limga qilingan xayriya — yurt kelajagiga qōyilgan eng buyuk sarmoyadir."
+            </p>
+            <footer class="text-xs font-extrabold text-slate-900 dark:text-white">— Asosçi: Narzullayeva Nilufar Nuraliyevna</footer>
+          </blockquote>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">Loyiha nomi va maqomi</div>
+              <div class="text-sm font-extrabold mt-1 text-slate-900 dark:text-white">"MEHR" Xayriya va Ta'lim Portali</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">Xayriya tamoyili</div>
+              <div class="text-sm font-extrabold mt-1 text-emerald-600 dark:text-emerald-400">100% Şaffof va manzilli kōmak</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">Qamrov hududi</div>
+              <div class="text-sm font-extrabold mt-1 text-indigo-600 dark:text-indigo-400">14 ta hudud • 18 450+ yoşlar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. XAYRIYA ==================== -->
+    <section id="sec-xayriya" class="page-section scroll-mt-36 space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 text-xs font-extrabold uppercase tracking-wider">
+            <i class="fa-solid fa-heart"></i><span>Xayriya loyihalari</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">MEHR maqsadli fondlari</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 max-w-2xl">Har bir sōm şaffof reyestrda qayd etiladi va aniq maktab, oila yoki ōquvçiga manzilli yetkaziladi. Ōzingizga yaqin loyihani tanlang.</p>
+        </div>
+        <div id="charitySummary" class="flex flex-wrap gap-2 text-xs"></div>
+      </div>
+
+      <div id="projectGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div class="lg:col-span-2 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white p-6 sm:p-8 shadow-xl space-y-5">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-100">Qanday işlaydi?</span>
+            <h3 class="text-xl font-extrabold mt-1">Ehsoningiz yōli — 4 qadamda</h3>
+          </div>
+          <ol class="space-y-4">
+            <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">1</span><div><div class="font-bold">Loyihani tanlang</div><p class="text-xs text-emerald-50/90">Maqsadli fondlardan birini yoki umumiy fondni tanlang.</p></div></li>
+            <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">2</span><div><div class="font-bold">Ehson qiling</div><p class="text-xs text-emerald-50/90">Uzcard, Humo yoki Visa orqali 0% komissiya bilan.</p></div></li>
+            <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">3</span><div><div class="font-bold">Reyestrda kuzating</div><p class="text-xs text-emerald-50/90">Ehsoningiz şaffof reyestrda darhol kōrinadi.</p></div></li>
+            <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">4</span><div><div class="font-bold">Natijani kōring</div><p class="text-xs text-emerald-50/90">Jihozlangan maktablar va ōquvçilar haqida hisobot olasiz.</p></div></li>
+          </ol>
+        </div>
+
+        <div class="lg:col-span-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm p-5 sm:p-6 space-y-4">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h3 class="text-lg font-extrabold flex items-center gap-2">
+                <span class="relative flex w-2.5 h-2.5"><span class="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping"></span><span class="relative inline-flex w-2.5 h-2.5 rounded-full bg-emerald-500"></span></span>
+                Şaffof reyestr
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Sōnggi ehsonlar — real vaqt rejimida</p>
+            </div>
+            <span id="registryCount" class="text-xs font-bold text-slate-500 dark:text-slate-400"></span>
+          </div>
+          <ul id="registryList" class="divide-y divide-slate-100 dark:divide-slate-800"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. TA'LIM PORTALI ==================== -->
+    <section id="sec-talim" class="page-section scroll-mt-36 space-y-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 text-xs font-extrabold uppercase tracking-wider">
+            <i class="fa-solid fa-graduation-cap"></i><span>Ta'lim portali</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Bepul onlayn kurslar</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 max-w-2xl">Kursga bepul yoziling, darslarni ōz tezligingizda ōting va yakunida şaxsiy sertifikatingizni yuklab oling.</p>
+        </div>
+        <div class="relative w-full lg:w-80">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input id="courseSearch" type="search" placeholder="Kurslarni qidiriş..." aria-label="Kurslarni qidiriş" class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40" />
+        </div>
+      </div>
+
+      <div id="courseFilters" role="tablist" aria-label="Kurs yōnalişlari" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0"></div>
+      <div id="courseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+      <p id="courseEmpty" class="hidden text-center text-sm text-slate-500 dark:text-slate-400 py-10">
+        <i class="fa-solid fa-face-meh text-2xl block mb-2"></i>Sōrovingiz bōyiça kurs topilmadi.
+      </p>
+    </section>
+
+    <!-- ==================== 4. XIZMATLAR ==================== -->
+    <section id="sec-xizmatlar" class="page-section scroll-mt-36 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm p-6 sm:p-10 space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-100 dark:bg-teal-950/70 text-teal-700 dark:text-teal-300 text-xs font-extrabold uppercase tracking-wider">
+            <i class="fa-solid fa-layer-group"></i><span>Xizmatlar</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">MEHR xizmatlari</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 max-w-2xl">Ta'lim, xayriya va ijtimoiy yōnalişlardagi barça imkoniyatlar bir joyda.</p>
+        </div>
+        <div id="serviceFilters" role="tablist" aria-label="Xizmat turlari" class="flex items-center gap-1 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 overflow-x-auto no-scrollbar"></div>
+      </div>
+      <div id="serviceGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- ==================== 5. STATISTIKA ==================== -->
+    <section id="sec-statistika" class="page-section scroll-mt-36 space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-100 dark:bg-sky-950/70 text-sky-700 dark:text-sky-300 text-xs font-extrabold uppercase tracking-wider">
+            <i class="fa-solid fa-chart-column"></i><span>Statistika</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Şaffof kōrsatkichlar</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 max-w-2xl">Yiḡilgan mablaḡlar, qamrab olingan hududlar va loyihalarning bajarilişi — ochiq va tuşunarli kōrinişda.</p>
+        </div>
+        <span id="statsDemoBadge" class="hidden self-start md:self-auto items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-xs font-bold">
+          <i class="fa-solid fa-flask"></i> Namuna (demo) kōrsatkichlar
+        </span>
+      </div>
+
+      <div id="kpiRow" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="viz-card rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm p-5 sm:p-6">
+          <div class="flex items-start justify-between gap-3 mb-5">
+            <div>
+              <h3 class="text-base font-extrabold">Hududlar bōyiça qamrab olingan yoşlar</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Jami 18 450 nafar • 14 ta hudud</p>
+            </div>
+            <button type="button" data-viz-toggle="region" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"><i class="fa-solid fa-table mr-1"></i><span>Jadval</span></button>
+          </div>
+          <div id="regionChart"></div>
+          <div id="regionTable" class="hidden"></div>
+        </div>
+
+        <div class="viz-card rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm p-5 sm:p-6 flex flex-col">
+          <div class="flex items-start justify-between gap-3 mb-5">
+            <div>
+              <h3 class="text-base font-extrabold">Oylik xayriya tuşumlari</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Sōnggi 12 oy, mln sōm</p>
+            </div>
+            <button type="button" data-viz-toggle="monthly" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"><i class="fa-solid fa-table mr-1"></i><span>Jadval</span></button>
+          </div>
+          <div id="monthlyChart" class="relative flex-1 min-h-[260px]"></div>
+          <div id="monthlyTable" class="hidden"></div>
+        </div>
+      </div>
+
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm p-5 sm:p-6">
+        <div class="mb-5">
+          <h3 class="text-base font-extrabold">Fondlar bōyiça bajariliş</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Yiḡilgan mablaḡ va maqsadli summa</p>
+        </div>
+        <ul id="fundMeters" class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5"></ul>
+      </div>
+    </section>
+
+    <!-- ==================== 6. MUHARRIRLAR ==================== -->
+    <section id="sec-muharrir" class="page-section scroll-mt-36 relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-2xl">
+      <div id="editorsBg" class="absolute inset-0 opacity-20 bg-cover bg-center pointer-events-none"></div>
+      <div class="h-2 w-full bg-gradient-to-r from-indigo-500 via-emerald-400 to-cyan-500"></div>
+
+      <div class="relative p-6 sm:p-10 lg:p-12 space-y-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-emerald-300 text-xs font-extrabold uppercase tracking-wider">
+              <i class="fa-solid fa-microchip"></i>
+              <span>"MEHR" Tahririyat hamda IT va Sun'iy Intellekt Kengaşi</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">Muharrirlar — IT va Sun'iy Intellekt Koordinatorlari</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-300 max-w-md">"MEHR" platformasining IT infratuzilmasi, sun'iy intellekt integratsiyasi, ōquv-metodik sifati hamda yangi ōzbek lotin alifbosi me'yorlariga tōliq mosligi koordinatorlar tomonidan boşqariladi.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- CARD 1: MADIYOROV SARDOR FIRDAVSOVIÇ -->
+          <article class="rounded-3xl bg-white/10 glass-card border border-white/15 p-6 sm:p-8 flex flex-col justify-between gap-6 shadow-xl hover:border-emerald-400/50 transition-all">
+            <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <div data-photo="editor" class="relative w-48 sm:w-44 aspect-[3/4] shrink-0 rounded-2xl overflow-hidden shadow-2xl border-4 border-indigo-400/40 bg-white text-slate-900 group">
+                <img data-photo-img alt="Muharrir Madiyorov Sardor Firdavsoviç" class="hidden w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+                <div data-photo-fallback class="w-full h-full flex flex-col items-center justify-between p-4 text-center bg-gradient-to-b from-slate-100 via-white to-indigo-50">
+                  <div class="mt-3 w-20 h-20 rounded-full bg-gradient-to-br from-slate-900 to-indigo-900 text-white flex items-center justify-center shadow-xl border-2 border-white">
+                    <span class="text-2xl font-extrabold">MS</span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-slate-200 shadow w-full">
+                    <div class="text-[10px] font-bold uppercase text-indigo-600">IT va SI Koordinatori</div>
+                    <div class="text-xs font-extrabold text-slate-900 mt-0.5">Madiyorov Sardor Firdavsoviç</div>
+                  </div>
+                </div>
+                <label class="photo-upload absolute top-2.5 right-2.5 px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white glass-card text-[11px] font-bold flex items-center gap-1.5 shadow-lg transition-all cursor-pointer" title="Muharrir suratini tanlaş">
+                  <i class="fa-solid fa-camera text-emerald-400"></i>
+                  <span>Suratni tanlaş</span>
+                  <input data-photo-input type="file" accept="image/*" class="sr-only" />
+                </label>
+              </div>
+
+              <div class="space-y-3 text-center sm:text-left flex-1">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-extrabold">
+                  <i class="fa-solid fa-robot"></i> Muharrir — IT va sun'iy intellekt koordinatori
+                </span>
+                <h3 class="text-xl sm:text-2xl font-extrabold text-white leading-snug">Madiyorov Sardor Firdavsoviç</h3>
+                <p class="text-xs font-semibold text-indigo-300">"MEHR" xayriya platformasi va ta'lim portali Muharriri hamda IT va sun'iy intellekt koordinatori</p>
+                <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed pt-1">"Uşbu 'MEHR' platformasining IT infratuzilmasi, sun'iy intellektga asoslangan ta'lim va tahlil modullari, tezkor tōlov tizimi hamda yangi ōzbek lotin alifbosidagi kontent tahriri foydalanuvçilar uçun eng yuqori qulaylik va xavfsizlik mezonlari asosida işlab çiqildi."</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-white/10 text-xs">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Maqomi:</span>
+                <strong class="text-white">Muharrir — IT va sun'iy intellekt koordinatori</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Ma'sul yōnaliş:</span>
+                <strong class="text-emerald-400">IT Arxitektura, SI va Tahrir</strong>
+              </div>
+            </div>
+          </article>
+
+          <!-- CARD 2: HOTAMOV ULUḠBEK UMEDOVIÇ -->
+          <article class="rounded-3xl bg-white/10 glass-card border border-white/15 p-6 sm:p-8 flex flex-col justify-between gap-6 shadow-xl hover:border-cyan-400/50 transition-all">
+            <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <div data-photo="reviewer" class="relative w-48 sm:w-44 aspect-[3/4] shrink-0 rounded-2xl overflow-hidden shadow-2xl border-4 border-cyan-400/40 bg-white text-slate-900 group">
+                <img data-photo-img alt="Muharrir va Taqrizçi Hotamov Uluḡbek Umedoviç" class="hidden w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+                <div data-photo-fallback class="w-full h-full flex flex-col items-center justify-between p-4 text-center bg-gradient-to-b from-slate-100 via-white to-cyan-50">
+                  <div class="mt-3 w-20 h-20 rounded-full bg-gradient-to-br from-slate-900 to-cyan-900 text-white flex items-center justify-center shadow-xl border-2 border-white">
+                    <span class="text-2xl font-extrabold">HU</span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-slate-200 shadow w-full">
+                    <div class="text-[10px] font-bold uppercase text-cyan-700">IT va SI Koordinatori</div>
+                    <div class="text-xs font-extrabold text-slate-900 mt-0.5">Hotamov Uluḡbek Umedoviç</div>
+                  </div>
+                </div>
+                <label class="photo-upload absolute top-2.5 right-2.5 px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white glass-card text-[11px] font-bold flex items-center gap-1.5 shadow-lg transition-all cursor-pointer" title="Muharrir va Taqrizçi suratini tanlaş">
+                  <i class="fa-solid fa-camera text-cyan-400"></i>
+                  <span>Suratni tanlaş</span>
+                  <input data-photo-input type="file" accept="image/*" class="sr-only" />
+                </label>
+              </div>
+
+              <div class="space-y-3 text-center sm:text-left flex-1">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs font-extrabold">
+                  <i class="fa-solid fa-brain"></i> Muharrir va Taqrizçi — IT va sun'iy intellekt koordinatori
+                </span>
+                <h3 class="text-xl sm:text-2xl font-extrabold text-white leading-snug">Hotamov Uluḡbek Umedoviç</h3>
+                <p class="text-xs font-semibold text-cyan-300">"MEHR" xayriya platformasi va ta'lim portali Muharriri, Taqrizçisi hamda IT va sun'iy intellekt koordinatori</p>
+                <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed pt-1">"'MEHR' portalidagi raqamli ta'lim dasturlari, sun'iy intellekt yordamida tahlil qilinuvçi şaffof statistika kōrsatkichlari va xayriya loyihalarining texnik-metodik mezonlari ekspertizadan ōtkazilgan bōlib, yoşlarning zamonaviy bilim olişiga xizmat qiladi."</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-white/10 text-xs">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Maqomi:</span>
+                <strong class="text-white">Muharrir va Taqrizçi — IT va sun'iy intellekt koordinatori</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Ma'sul yōnaliş:</span>
+                <strong class="text-cyan-400">SI Koordinatsiyasi va Texnik Taqriz</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-16 pb-24 md:pb-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row items-center justify-between gap-5 text-xs text-slate-500 dark:text-slate-400">
+      <div class="space-y-1 text-center lg:text-left">
+        <div class="font-black text-slate-800 dark:text-slate-100 text-sm tracking-wide">MEHR — Xayriya Platformasi va Ta'lim Portali © 2026</div>
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-1">
+          <span><strong>Asosçi:</strong> Narzullayeva Nilufar Nuraliyevna</span>
+          <span class="hidden sm:inline">|</span>
+          <span><strong>Muharrir (IT va sun'iy intellekt koordinatori):</strong> Madiyorov Sardor Firdavsoviç</span>
+          <span class="hidden sm:inline">|</span>
+          <span><strong>Muharrir va Taqrizçi (IT va sun'iy intellekt koordinatori):</strong> Hotamov Uluḡbek Umedoviç</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4 font-bold">
+        <button type="button" data-nav="asoschi" class="hover:text-emerald-500 cursor-pointer">Asosçi</button>
+        <button type="button" data-nav="muharrir" class="hover:text-emerald-500 cursor-pointer">Muharrirlar</button>
+        <button type="button" data-donate="umumiy" class="hover:text-emerald-500 cursor-pointer">Tōlov oynasi</button>
+        <button type="button" data-auth class="hover:text-emerald-500 cursor-pointer">Rōyxatdan ōtiş</button>
+        <button type="button" data-install-help class="hover:text-emerald-500 cursor-pointer"><i class="fa-solid fa-mobile-screen-button mr-1"></i>Ilovani ōrnatiş</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobil: tezkor ehson tugmasi -->
+  <button type="button" data-donate="umumiy" class="md:hidden fixed right-4 z-30 bottom-[calc(1rem+env(safe-area-inset-bottom))] flex items-center gap-2 pl-4 pr-5 py-3.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-sm shadow-2xl shadow-emerald-600/40 cursor-pointer" aria-label="Ehson qiliş">
+    <i class="fa-solid fa-heart"></i><span>Ehson</span>
+  </button>
+
+  <!-- ==================== MODAL 1: TŌLOV OYNASI ==================== -->
+  <div id="paymentModal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4 bg-slate-950/75 glass-card" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+    <div class="modal-panel relative w-full sm:max-w-lg max-h-[94vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-fade">
+      <div class="sticky top-0 z-10 p-5 sm:p-6 bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-2xl bg-white/15"><i class="fa-solid fa-credit-card text-xl"></i></div>
+          <div>
+            <h3 id="paymentTitle" class="text-base sm:text-lg font-extrabold">MEHR — Xavfsiz Tōlov va Xayriya Oynasi</h3>
+            <p class="text-xs text-emerald-100">Uzcard • Humo • Visa • 0% Komissiya</p>
+          </div>
+        </div>
+        <button type="button" data-close class="p-2 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Yopiş"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="paymentForm" novalidate class="p-5 sm:p-6 space-y-4">
+        <div id="paymentDemo" class="hidden items-start gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200 text-xs">
+          <i class="fa-solid fa-flask mt-0.5"></i>
+          <span><strong>Demo rejim:</strong> tōlov tizimi hali ulanmagan, hech qanday pul yeçilmaydi va karta ma'lumotlari hech qayerga yuborilmaydi. Haqiqiy karta ma'lumotlarini kiritmang.</span>
+        </div>
+
+        <div>
+          <label for="payFund" class="text-[11px] font-bold uppercase text-emerald-600 dark:text-emerald-400 block mb-1.5">Tanlangan MEHR loyihasi</label>
+          <select id="payFund" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold"></select>
+        </div>
+
+        <div>
+          <span class="text-xs font-bold uppercase text-slate-500 block mb-2">Summani tanlang yoki kiriting (sōm)</span>
+          <div id="payAmounts" class="grid grid-cols-4 gap-2 mb-2.5"></div>
+          <input id="payAmount" type="text" inputmode="numeric" autocomplete="off" aria-label="Xayriya summasi" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold" />
+          <p data-error-for="payAmount" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2">
+            <label for="payCard" class="text-xs font-semibold block mb-1">Karta raqami (Uzcard / Humo / Visa)</label>
+            <div class="relative">
+              <input id="payCard" type="text" inputmode="numeric" autocomplete="off" placeholder="8600 0000 0000 0000" maxlength="19" class="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-mono" />
+              <span id="payCardBrand" class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400"></span>
+            </div>
+            <p data-error-for="payCard" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+          </div>
+          <div>
+            <label for="payExp" class="text-xs font-semibold block mb-1">Amal qiliş</label>
+            <input id="payExp" type="text" inputmode="numeric" autocomplete="off" placeholder="OO/YY" maxlength="5" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-mono" />
+            <p data-error-for="payExp" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <input id="payDonor" type="text" maxlength="60" placeholder="Ismingiz (ixtiyoriy)" aria-label="Ismingiz (ixtiyoriy)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+          <label class="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300 cursor-pointer select-none">
+            <input id="payAnon" type="checkbox" class="w-4 h-4 accent-emerald-600" />
+            Reyestrda ismimni kōrsatmang (anonim ehson)
+          </label>
+        </div>
+
+        <button id="paySubmit" type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 disabled:opacity-60 text-white font-extrabold text-sm shadow-lg cursor-pointer flex items-center justify-center gap-2">
+          <i class="fa-solid fa-lock"></i>
+          <span id="paySubmitLabel">Tōlovni tasdiqlaş</span>
+        </button>
+      </form>
+
+      <div id="paymentReceipt" class="hidden p-6 text-center space-y-5">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto text-3xl">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <span id="receiptId" class="text-xs font-bold uppercase text-emerald-600 dark:text-emerald-400">MEHR — Elektron Kvitansiya</span>
+          <h4 id="receiptAmount" class="text-3xl font-extrabold mt-1">50 000 sōm</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ehsoningiz uçun taşakkur! Mablaḡ "MEHR" şaffof reyestriga muvaffaqiyatli qayd etildi.</p>
+        </div>
+        <dl id="receiptDetails" class="text-left text-xs rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 divide-y divide-slate-200 dark:divide-slate-700"></dl>
+        <div class="grid grid-cols-2 gap-3">
+          <button id="receiptShare" type="button" class="py-3 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold text-sm cursor-pointer"><i class="fa-solid fa-share-nodes mr-1.5"></i>Ulaşiş</button>
+          <button type="button" data-close class="py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm cursor-pointer">Yopiş</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: RŌYXATDAN ŌTIŞ ==================== -->
+  <div id="authModal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4 bg-slate-950/75 glass-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="modal-panel relative w-full sm:max-w-md max-h-[94vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-fade">
+      <div class="p-5 sm:p-6 bg-gradient-to-r from-indigo-600 to-violet-700 text-white flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-2xl bg-white/15"><i class="fa-solid fa-user-plus text-xl"></i></div>
+          <div>
+            <h3 id="authTitle" class="text-base sm:text-lg font-extrabold">MEHR — Rōyxatdan ōtiş oynasi</h3>
+            <p class="text-xs text-indigo-100">Ōquvçi • Xayriyaçi • Volontyor</p>
+          </div>
+        </div>
+        <button type="button" data-close class="p-2 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Yopiş"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="authForm" novalidate class="p-5 sm:p-6 space-y-4">
+        <p id="authNote" class="hidden items-center gap-2 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-200 text-xs font-semibold"></p>
+        <div>
+          <span class="text-xs font-bold text-slate-500 block mb-2">"MEHR" platformasidagi rolingizni tanlang:</span>
+          <div id="authRoles" class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Rol"></div>
+        </div>
+        <div>
+          <label for="authName" class="text-xs font-semibold block mb-1">Ism va familiyangiz</label>
+          <input id="authName" type="text" maxlength="60" autocomplete="name" placeholder="Masalan: Madiyorov Sardor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+          <p data-error-for="authName" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+        </div>
+        <div>
+          <label for="authPhone" class="text-xs font-semibold block mb-1">Telefon raqamingiz</label>
+          <input id="authPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 90 123 45 67" maxlength="17" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+          <p data-error-for="authPhone" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+        </div>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400"><i class="fa-solid fa-shield-halved mr-1"></i>Ma'lumotlaringiz faqat şu qurilmada saqlanadi.</p>
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-lg cursor-pointer">MEHR hisobini yaratiş</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: PROFIL ==================== -->
+  <div id="profileModal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4 bg-slate-950/75 glass-card" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+    <div class="modal-panel relative w-full sm:max-w-lg max-h-[94vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-fade">
+      <div class="p-5 sm:p-6 bg-gradient-to-r from-indigo-600 to-violet-700 text-white flex items-center justify-between gap-3">
+        <h3 id="profileTitle" class="text-lg font-extrabold flex items-center gap-2"><i class="fa-solid fa-id-card"></i> Mening hisobim</h3>
+        <button type="button" data-close class="p-2 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Yopiş"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="profileBody" class="p-5 sm:p-6 space-y-5"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 4: KURS ==================== -->
+  <div id="courseModal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4 bg-slate-950/75 glass-card" role="dialog" aria-modal="true" aria-labelledby="courseTitle">
+    <div class="modal-panel relative w-full sm:max-w-2xl max-h-[94vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-fade">
+      <div id="courseBody"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 5: ILOVANI ŌRNATIŞ ==================== -->
+  <div id="installModal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4 bg-slate-950/75 glass-card" role="dialog" aria-modal="true" aria-labelledby="installTitle">
+    <div class="modal-panel relative w-full sm:max-w-md max-h-[94vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-fade">
+      <div class="p-5 sm:p-6 bg-gradient-to-r from-emerald-600 to-indigo-600 text-white flex items-center justify-between gap-3">
+        <h3 id="installTitle" class="text-lg font-extrabold flex items-center gap-2"><i class="fa-solid fa-mobile-screen-button"></i> Ilovani ōrnatiş</h3>
+        <button type="button" data-close class="p-2 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Yopiş"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="p-5 sm:p-6 space-y-4 text-sm">
+        <p class="text-slate-600 dark:text-slate-300">MEHR — telefoningizga oddiy ilova kabi ōrnatiladi, bosh ekranda belgi paydo bōladi va internet bōlmaganda ham oçiladi.</p>
+        <button type="button" data-install class="hidden w-full items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold cursor-pointer"><i class="fa-solid fa-download"></i> Hozir ōrnatiş</button>
+        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-2">
+          <div class="font-extrabold flex items-center gap-2"><i class="fa-brands fa-android text-emerald-600"></i> Android (Chrome)</div>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Brauzer menyusini (⋮) oçing va <strong>"Ilovani ōrnatiş"</strong> yoki <strong>"Bosh ekranga qōşiş"</strong> bandini tanlang.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-2">
+          <div class="font-extrabold flex items-center gap-2"><i class="fa-brands fa-apple"></i> iPhone / iPad (Safari)</div>
+          <p class="text-xs text-slate-600 dark:text-slate-400"><strong>"Ulaşiş"</strong> tugmasini (<i class="fa-solid fa-arrow-up-from-bracket"></i>) bosing va <strong>"Bosh ekranga qōşiş"</strong> (Add to Home Screen) ni tanlang.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 space-y-2">
+          <div class="font-extrabold flex items-center gap-2"><i class="fa-solid fa-desktop text-indigo-600"></i> Kompyuter (Chrome / Edge)</div>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Manzil satrining ōng tomonidagi <strong>ōrnatiş</strong> belgisini bosing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bildirişnomalar va grafik maslahat oynasi -->
+  <div id="toastHost" class="fixed z-[70] left-4 right-4 sm:left-auto sm:right-6 top-24 flex flex-col items-stretch sm:items-end gap-2 pointer-events-none" aria-live="polite"></div>
+  <div id="vizTip" role="tooltip" class="viz-tip hidden fixed z-[65] pointer-events-none px-3 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs shadow-xl"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+  }
+  input[type='search']::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
+}
+
+/* Grafiklar uçun rang tokenlari (yorqin / qoronḡu rejim) */
+:root {
+  --viz-series: #059669;
+  --viz-series-hover: #047857;
+  --viz-track: #d1fae5;
+  --viz-wash: rgba(5, 150, 105, 0.1);
+  --viz-grid: #e2e8f0;
+  --viz-axis: #cbd5e1;
+  --viz-surface: #ffffff;
+  --viz-muted: #64748b;
+}
+.dark {
+  --viz-series: #12a87a;
+  --viz-series-hover: #34d399;
+  --viz-track: #064e3b;
+  --viz-wash: rgba(52, 211, 153, 0.12);
+  --viz-grid: #1e293b;
+  --viz-axis: #334155;
+  --viz-surface: #0f172a;
+  --viz-muted: #94a3b8;
+}
+
+.glass-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade {
+  animation: fadeIn 0.35s ease-out both;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes toastOut {
+  to { opacity: 0; transform: translateY(-8px) scale(0.98); }
+}
+.toast { animation: toastIn 0.25s ease-out both; }
+.toast-out { animation: toastOut 0.25s ease-in both; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Hero va bōlimlar orasida silliq ōtiş */
+.page-section.is-entering { animation: fadeIn 0.35s ease-out both; }
+
+/* Grafik elementlari */
+.viz-bar { background: var(--viz-series); border-radius: 0 4px 4px 0; transition: background-color 0.15s; }
+.viz-row:hover .viz-bar, .viz-row:focus-visible .viz-bar { background: var(--viz-series-hover); }
+.viz-row:focus-visible { outline: 2px solid var(--viz-series); outline-offset: 2px; border-radius: 6px; }
+.viz-meter-track { background: var(--viz-track); }
+.viz-meter-fill { background: var(--viz-series); }
+.viz-tip { max-width: 16rem; }
+.viz-svg:focus-visible { outline: 2px solid var(--viz-series); outline-offset: 4px; border-radius: 8px; }
+
+/* Rasm yuklaş tugmasi: kompyuterda faqat kursor olib borilganda kōrinadi */
+@media (hover: hover) {
+  .photo-upload { opacity: 0; }
+  [data-photo]:hover .photo-upload,
+  .photo-upload:focus-within { opacity: 1; }
+}
+
+/* Maxsus scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.05); }
+::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.5); border-radius: 9999px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

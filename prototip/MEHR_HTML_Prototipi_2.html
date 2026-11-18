@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEHR — Xayriya platformasi va ta'lim portali</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .glass-card {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade {
+      animation: fadeIn 0.35s ease-out forwards;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(16, 185, 129, 0.5);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+  <!-- ==================== TOP NAVBAR ==================== -->
+  <header class="sticky top-0 z-40 glass-card bg-white/85 dark:bg-slate-900/85 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+      <!-- Brand Logo: MEHR -->
+      <a href="#bos-sahifa" onclick="switchSection('barçasi')" class="flex items-center gap-3 group">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-hand-holding-heart text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600 dark:from-emerald-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              MEHR
+            </span>
+            <span class="px-2 py-0.5 text-[10px] font-extrabold uppercase rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300/50">
+              Uzbekistan
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
+            Xayriya platformasi va ta'lim portali
+          </p>
+        </div>
+      </a>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden xl:flex items-center gap-1 bg-slate-100 dark:bg-slate-800/90 p-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+        <button onclick="switchSection('barçasi')" data-nav="barçasi" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm transition-all cursor-pointer">
+          <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Boş sahifa
+        </button>
+        <button onclick="switchSection('asosçi')" data-nav="asosçi" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer">
+          <i class="fa-solid fa-user-tie mr-1.5"></i>Asosçi
+        </button>
+        <button onclick="switchSection('xayriya')" data-nav="xayriya" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer">
+          <i class="fa-solid fa-heart mr-1.5"></i>Xayriya
+        </button>
+        <button onclick="switchSection('talim')" data-nav="talim" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer">
+          <i class="fa-solid fa-graduation-cap mr-1.5"></i>Ta'lim portali
+        </button>
+        <button onclick="switchSection('xizmatlar')" data-nav="xizmatlar" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer">
+          <i class="fa-solid fa-layer-group mr-1.5"></i>Xizmatlar
+        </button>
+        <button onclick="switchSection('statistika')" data-nav="statistika" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer">
+          <i class="fa-solid fa-chart-column mr-1.5"></i>Statistika
+        </button>
+        <button onclick="switchSection('muharrir')" data-nav="muharrir" class="nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer">
+          <i class="fa-solid fa-pen-nib mr-1.5"></i>Muharrirlar
+        </button>
+      </nav>
+
+      <!-- Right Action Buttons -->
+      <div class="flex items-center gap-2">
+        <!-- Yorqin / Qoronḡu rejim tugmasi -->
+        <button
+          id="themeToggleBtn"
+          onclick="toggleDarkMode()"
+          class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-300 border border-slate-200/80 dark:border-slate-700 transition-all cursor-pointer"
+          title="Yorqin / Qoronḡu rejimni almaştiriş"
+        >
+          <i id="themeIcon" class="fa-solid fa-moon text-indigo-600 dark:text-amber-400"></i>
+          <span id="themeText" class="hidden sm:inline text-xs font-bold">Qoronḡu</span>
+        </button>
+
+        <!-- Tōlov Oynasi Tugmasi -->
+        <button
+          onclick="openPaymentModal('MEHR — Çekka hudud maktablariga zamonaviy kompyuterlar')"
+          class="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
+        >
+          <i class="fa-solid fa-credit-card"></i>
+          <span>Tōlov oynasi</span>
+        </button>
+
+        <!-- Rōyxatdan ōtiş Tugmasi -->
+        <button
+          id="navUserBtn"
+          onclick="openAuthModal()"
+          class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-indigo-500/20 transition-all cursor-pointer"
+        >
+          <i class="fa-solid fa-user-plus"></i>
+          <span id="navUserText">Rōyxatdan ōtiş</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile & Tablet Navigation Bar -->
+    <div class="xl:hidden flex items-center gap-1.5 overflow-x-auto px-4 py-2.5 bg-slate-100/90 dark:bg-slate-900 border-t border-slate-200/60 dark:border-slate-800 text-xs">
+      <button onclick="switchSection('barçasi')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold shrink-0 cursor-pointer">Boş sahifa</button>
+      <button onclick="switchSection('asosçi')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 font-semibold shrink-0 cursor-pointer">Asosçi</button>
+      <button onclick="switchSection('xayriya')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 font-semibold shrink-0 cursor-pointer">Xayriya</button>
+      <button onclick="switchSection('talim')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 font-semibold shrink-0 cursor-pointer">Ta'lim portali</button>
+      <button onclick="switchSection('xizmatlar')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 font-semibold shrink-0 cursor-pointer">Xizmatlar</button>
+      <button onclick="switchSection('statistika')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 font-semibold shrink-0 cursor-pointer">Statistika</button>
+      <button onclick="switchSection('muharrir')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 font-semibold shrink-0 cursor-pointer">Muharrirlar</button>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION (ALOHIDA DINAMIK FON RASMI BILAN) ==================== -->
+  <section id="bos-sahifa" class="relative overflow-hidden">
+    <div
+      id="heroBackground"
+      class="absolute inset-0 bg-cover bg-center transition-all duration-700 scale-105"
+      style="background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1920&q=80');"
+    ></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/85 to-indigo-950/80"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+      <div class="grid lg:grid-cols-12 gap-8 items-center">
+        <!-- Hero Left Text -->
+        <div class="lg:col-span-7 space-y-6 text-white">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 glass-card border border-white/20 text-emerald-300 text-xs font-bold">
+            <i class="fa-solid fa-star text-amber-400"></i>
+            <span id="heroBadgeText">"MEHR" — Asosçi: Narzullayeva Nilufar Nuraliyevna • IT va SI koordinatorlari: Madiyorov S.F. va Hotamov U.U.</span>
+          </div>
+
+          <h1 id="heroTitleText" class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">MEHR</span> — Xayriya platformasi va zamonaviy ta'lim portali
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-200/90 max-w-2xl leading-relaxed">
+            <strong>"MEHR"</strong> loyihasi — <strong>Narzullayeva Nilufar Nuraliyevna</strong> taşabbusi bilan asos solingan hamda IT va sun'iy intellekt koordinatorlari <strong>Madiyorov Sardor Firdavsoviç</strong> va <strong>Hotamov Uluḡbek Umedoviç</strong> tahririyati ostida ișlab çiqilgan, Ōzbekistondagi ehtiyojmand yoşlarning zamonaviy ilm olişi, maktablarni jihozlaș va bepul onlayn kurslar orqali minglab ōquvçilarni qōllab-quvvatlaș ekotizimidir.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3.5 pt-2">
+            <button
+              onclick="openPaymentModal('MEHR Umumiy Xayriya Fondi')"
+              class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold shadow-xl shadow-emerald-500/25 transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-heart"></i>
+              <span>MEHR orqali ehson qiliş</span>
+            </button>
+
+            <button
+              onclick="switchSection('talim')"
+              class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 glass-card border border-white/25 text-white font-bold transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-book-open"></i>
+              <span>Bepul kurslarni kōriş</span>
+            </button>
+
+            <button
+              onclick="openAuthModal()"
+              class="flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-indigo-600/80 hover:bg-indigo-600 glass-card border border-indigo-400/30 text-white font-semibold text-sm transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Rōyxatdan ōtiş</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hero Quick Donation Box -->
+        <div class="lg:col-span-5">
+          <div class="rounded-3xl bg-white/10 dark:bg-slate-900/65 glass-card border border-white/20 p-6 text-white shadow-2xl space-y-5">
+            <div class="flex items-center justify-between border-b border-white/15 pb-4">
+              <div>
+                <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold">MEHR Tezkor Tōlov Oynasi</span>
+                <h3 class="text-lg font-bold mt-0.5">Şaffof va komissiyasiz ehson</h3>
+              </div>
+              <i class="fa-solid fa-shield-heart text-3xl text-emerald-400"></i>
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-300 block mb-2">Xayriya miqdorini tanlang (sōm):</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button onclick="setQuickHeroAmount(10000, this)" class="hero-amt-btn py-2.5 px-2 rounded-xl text-xs font-bold border bg-white/10 border-white/15 text-slate-200 hover:bg-white/20 cursor-pointer">10 000</button>
+                <button onclick="setQuickHeroAmount(50000, this)" class="hero-amt-btn py-2.5 px-2 rounded-xl text-xs font-bold border bg-emerald-500 border-emerald-400 text-white shadow-lg cursor-pointer">50 000</button>
+                <button onclick="setQuickHeroAmount(100000, this)" class="hero-amt-btn py-2.5 px-2 rounded-xl text-xs font-bold border bg-white/10 border-white/15 text-slate-200 hover:bg-white/20 cursor-pointer">100 000</button>
+                <button onclick="setQuickHeroAmount(500000, this)" class="hero-amt-btn py-2.5 px-2 rounded-xl text-xs font-bold border bg-white/10 border-white/15 text-slate-200 hover:bg-white/20 cursor-pointer">500 000</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-300 block mb-1.5">MEHR maqsadli fondini tanlang:</label>
+              <select id="heroProjectSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/85 border border-white/20 text-white text-sm focus:outline-none focus:border-emerald-400">
+                <option value="MEHR: Çekka hudud maktablariga zamonaviy kompyuterlar">Ta'lim xayriyasi: Çekka hudud maktablariga kompyuterlar</option>
+                <option value="MEHR: Kam ta'minlangan oilalar farzandlari uçun 'Ilm Qutisi'">Maktab jihozlari: 'Ilm Qutisi' xayriya aksiyasi</option>
+                <option value="MEHR: Inklyuziv ta'lim va maxsus reabilitatsiya markazi">Inklyuziv ta'lim: Maxsus kutubxona va IT xonasi</option>
+                <option value="MEHR: Iqtidorli yoşlar uçun 'Kelajak Granti' stipendiya fondi">Stipendiya: 'Kelajak Granti' OTM kontrakti kōmagi</option>
+              </select>
+            </div>
+
+            <button
+              onclick="openPaymentFromHero()"
+              class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-wallet"></i>
+              <span id="heroDonateBtnLabel">50 000 sōm tōlovga ōtiş</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20 flex-1">
+
+    <!-- ==================== 1. ASOSÇI BŌLIMI: NARZULLAYEVA NILUFAR NURALIYEVNA ==================== -->
+    <section id="sec-asosçi" class="page-section relative rounded-3xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl">
+      <div class="h-2.5 w-full bg-gradient-to-r from-sky-500 via-white to-emerald-500 border-y border-rose-500/40"></div>
+
+      <div class="p-6 sm:p-10 lg:p-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <!-- Asosçi Rasmi (1000019450.jpg) -->
+        <div class="lg:col-span-4 flex flex-col items-center">
+          <div class="relative w-64 sm:w-72 aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border-4 border-blue-900/30 dark:border-blue-500/40 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-950 group">
+            <img
+              id="founderImgPreview"
+              src="1000019450.jpg"
+              alt="Asosçi Narzullayeva Nilufar Nuraliyevna"
+              onerror="this.style.display='none'; document.getElementById('founderFallback').style.display='flex';"
+              class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            />
+            <!-- Fallback Card styled after 1000019450.jpg (Royal blue curtain & Uzbekistan flag theme) -->
+            <div id="founderFallback" style="display: none;" class="w-full h-full flex-col items-center justify-between p-6 text-center relative overflow-hidden bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 text-white">
+              <!-- Uzbekistan Flag Decorative Side Banner -->
+              <div class="absolute -left-6 -top-8 w-36 h-96 rotate-12 opacity-90 pointer-events-none shadow-xl">
+                <div class="h-1/3 bg-sky-500"></div>
+                <div class="h-1.5 bg-rose-600"></div>
+                <div class="h-1/3 bg-white"></div>
+                <div class="h-1.5 bg-rose-600"></div>
+                <div class="h-1/3 bg-emerald-500"></div>
+              </div>
+
+              <div class="relative z-10 mt-4 w-28 h-28 rounded-full bg-gradient-to-br from-blue-700 to-indigo-900 text-white flex items-center justify-center shadow-2xl border-4 border-white/90">
+                <span class="text-3xl font-extrabold">NN</span>
+              </div>
+
+              <div class="relative z-10 bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white glass-card p-4 rounded-2xl border border-blue-300/40 dark:border-slate-700 shadow-xl w-full">
+                <div class="text-xs font-bold uppercase text-blue-700 dark:text-emerald-400">"MEHR" Loyihasi Asosçisi</div>
+                <div class="text-sm font-extrabold mt-0.5">Narzullayeva Nilufar Nuraliyevna</div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Yangi surat: 1000019450.jpg</p>
+                <button
+                  type="button"
+                  onclick="document.getElementById('founderFileInput').click()"
+                  class="mt-3 w-full py-2 px-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow cursor-pointer"
+                >
+                  <i class="fa-solid fa-camera"></i>
+                  <span>1000019450.jpg ni tanlaș</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Upload Button Overlay -->
+            <button
+              type="button"
+              onclick="document.getElementById('founderFileInput').click()"
+              class="absolute top-3 right-3 px-3 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white glass-card text-xs font-bold flex items-center gap-1.5 shadow-lg transition-all cursor-pointer"
+              title="Asosçi yangi rasmini (1000019450.jpg) yuklaș"
+            >
+              <i class="fa-solid fa-camera text-emerald-400"></i>
+              <span>Suratni tanlaș (1000019450.jpg)</span>
+            </button>
+            <input id="founderFileInput" type="file" accept="image/*" class="hidden" onchange="previewUploadedImage(event, 'founderImgPreview', 'founderFallback')" />
+          </div>
+
+          <div class="mt-4 text-center">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 text-xs font-bold">
+              <i class="fa-solid fa-circle-check"></i>
+              "MEHR" Loyihasi Asosçisi
+            </span>
+          </div>
+        </div>
+
+        <!-- Asosçi Ma'lumotlari -->
+        <div class="lg:col-span-8 space-y-6">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              <i class="fa-solid fa-crown"></i>
+              <span>"MEHR" Platformasi Asosçisi va Rahbari</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Narzullayeva Nilufar Nuraliyevna
+            </h2>
+            <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+              "MEHR" xayriya platformasi va ta'lim portali asosçisi hamda loyiha taşabbuskori
+            </p>
+          </div>
+
+          <div class="relative p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border-l-4 border-emerald-500 space-y-3">
+            <p class="text-sm sm:text-base italic text-slate-700 dark:text-slate-200 leading-relaxed">
+              "Bizning 'MEHR' loyihasini barpo etişdan eng uluḡ maqsadimiz — Ōzbekistonning har bir gōşasidagi bilimga çanqoq yoşlarni qōllab-quvvatlaș, ehtiyojmand oilalar farzandlariga zamonaviy ta'lim eșiklarini oçiş va saxovatpeşa insonlarning mehrini şaffof tizim orqali maktablarga yetkazişdir. Zero, ta'limga qilingan xayriya — yurt kelajagiga qōyilgan eng buyuk sarmoyadir."
+            </p>
+            <div class="text-xs font-extrabold text-slate-900 dark:text-white">
+              — Asosçi: Narzullayeva Nilufar Nuraliyevna
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-3 gap-4 pt-1">
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">Loyiha nomi va maqomi</div>
+              <div class="text-sm font-extrabold mt-1 text-slate-900 dark:text-white">"MEHR" Xayriya va Ta'lim Portali</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">Xayriya tamoyili</div>
+              <div class="text-sm font-extrabold mt-1 text-emerald-600 dark:text-emerald-400">100% Şaffof va manzilli kōmak</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">Qamrov hududi</div>
+              <div class="text-sm font-extrabold mt-1 text-indigo-600 dark:text-indigo-400">14 ta hudud • 18,450+ yoşlar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. OXIRGI BŌLIM — TAHRIRIYAT VA TAQRIZÇILAR HAY'ATI ==================== -->
+    <section id="sec-muharrir" class="page-section relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-2xl">
+      <div class="absolute inset-0 opacity-20 bg-cover bg-center pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80');"></div>
+      <div class="h-2 w-full bg-gradient-to-r from-indigo-500 via-emerald-400 to-cyan-500"></div>
+
+      <div class="relative p-6 sm:p-10 lg:p-12 space-y-10">
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-emerald-300 text-xs font-extrabold uppercase tracking-wider">
+              <i class="fa-solid fa-microchip"></i>
+              <span>"MEHR" Tahririyat hamda IT va Sun'iy Intellekt Kengashi</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Muharrirlar — IT va Sun'iy Intellekt Koordinatorlari
+            </h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-300 max-w-md">
+            "MEHR" platformasining IT infratuzilmasi, sun'iy intellekt integratsiyasi, ōquv-metodik sifati hamda yangi ōzbek lotin alifbosi me'yorlariga tōliq mosligi koordinatorlar tomonidan boshqariladi.
+          </p>
+        </div>
+
+        <!-- Two Side-by-Side Editor & Reviewer Cards -->
+        <div class="grid lg:grid-cols-2 gap-8">
+
+          <!-- CARD 1: MUHARRIR — MADIYOROV SARDOR FIRDAVSOVIÇ (1000019418.jpg) -->
+          <div class="rounded-3xl bg-white/10 glass-card border border-white/15 p-6 sm:p-8 flex flex-col justify-between gap-6 shadow-xl hover:border-emerald-400/50 transition-all">
+            <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <!-- Portrait Box -->
+              <div class="relative w-48 sm:w-44 aspect-[3/4] shrink-0 rounded-2xl overflow-hidden shadow-2xl border-4 border-indigo-400/40 bg-white text-slate-900 group">
+                <img
+                  id="editorImgPreview"
+                  src="1000019418.jpg"
+                  alt="Muharrir Madiyorov Sardor Firdavsoviç"
+                  onerror="this.style.display='none'; document.getElementById('editorFallback').style.display='flex';"
+                  class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+                <!-- Fallback Portrait Display -->
+                <div id="editorFallback" style="display: none;" class="w-full h-full flex-col items-center justify-between p-4 text-center bg-gradient-to-b from-slate-100 via-white to-indigo-50 relative">
+                  <div class="mt-3 w-20 h-20 rounded-full bg-gradient-to-br from-slate-900 to-indigo-900 text-white flex items-center justify-center shadow-xl border-2 border-white">
+                    <span class="text-2xl font-extrabold">MS</span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-slate-200 shadow w-full">
+                    <div class="text-[10px] font-bold uppercase text-indigo-600">IT va SI Koordinatori</div>
+                    <div class="text-xs font-extrabold text-slate-900 mt-0.5">Madiyorov Sardor Firdavsoviç</div>
+                    <button
+                      type="button"
+                      onclick="document.getElementById('editorFileInput').click()"
+                      class="mt-2 w-full py-1.5 px-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold flex items-center justify-center gap-1 shadow cursor-pointer"
+                    >
+                      <i class="fa-solid fa-camera"></i>
+                      <span>1000019418.jpg</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Upload Button Overlay -->
+                <button
+                  type="button"
+                  onclick="document.getElementById('editorFileInput').click()"
+                  class="absolute top-2.5 right-2.5 px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white glass-card text-[11px] font-bold flex items-center gap-1.5 shadow-lg transition-all cursor-pointer"
+                  title="Muharrir rasmini (1000019418.jpg) yuklaș"
+                >
+                  <i class="fa-solid fa-camera text-emerald-400"></i>
+                  <span>Suratni tanlaș</span>
+                </button>
+                <input id="editorFileInput" type="file" accept="image/*" class="hidden" onchange="previewUploadedImage(event, 'editorImgPreview', 'editorFallback')" />
+              </div>
+
+              <!-- Info Box -->
+              <div class="space-y-3 text-center sm:text-left flex-1">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-extrabold">
+                  <i class="fa-solid fa-robot"></i>
+                  Muharrir — IT va sun'iy intellekt koordinatori
+                </span>
+                <h3 class="text-xl sm:text-2xl font-extrabold text-white leading-snug">
+                  Madiyorov Sardor Firdavsoviç
+                </h3>
+                <p class="text-xs font-semibold text-indigo-300">
+                  "MEHR" xayriya platformasi va ta'lim portali Muharriri hamda IT va sun'iy intellekt koordinatori
+                </p>
+                <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed pt-1">
+                  "Uşbu 'MEHR' platformasining IT infratuzilmasi, sun'iy intellektga asoslangan ta'lim va tahlil modullari, tezkor tōlov tizimi hamda yangi ōzbek lotin alifbosidagi kontent tahriri foydalanuvçilar uçun eng yuqori qulaylik va xavfsizlik mezonlari asosida ișlab çiqildi."
+                </p>
+              </div>
+            </div>
+
+            <!-- Bottom Badges -->
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-white/10 text-xs">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Maqomi:</span>
+                <strong class="text-white">Muharrir — IT va sun'iy intellekt koordinatori</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Ma'sul yōnaliş:</span>
+                <strong class="text-emerald-400">IT Arxitektura, SI va Tahrir</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2: MUHARRIR VA TAQRIZÇI — HOTAMOV ULUḠBEK UMEDOVIÇ (1000019451.jpg) -->
+          <div class="rounded-3xl bg-white/10 glass-card border border-white/15 p-6 sm:p-8 flex flex-col justify-between gap-6 shadow-xl hover:border-cyan-400/50 transition-all">
+            <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <!-- Portrait Box -->
+              <div class="relative w-48 sm:w-44 aspect-[3/4] shrink-0 rounded-2xl overflow-hidden shadow-2xl border-4 border-cyan-400/40 bg-white text-slate-900 group">
+                <img
+                  id="reviewerImgPreview"
+                  src="1000019451.jpg"
+                  alt="Muharrir va Taqrizçi Hotamov Uluḡbek Umedoviç"
+                  onerror="this.style.display='none'; document.getElementById('reviewerFallback').style.display='flex';"
+                  class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+                <!-- Fallback Portrait Display -->
+                <div id="reviewerFallback" style="display: none;" class="w-full h-full flex-col items-center justify-between p-4 text-center bg-gradient-to-b from-slate-100 via-white to-cyan-50 relative">
+                  <div class="mt-3 w-20 h-20 rounded-full bg-gradient-to-br from-slate-900 to-cyan-900 text-white flex items-center justify-center shadow-xl border-2 border-white">
+                    <span class="text-2xl font-extrabold">HU</span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-slate-200 shadow w-full">
+                    <div class="text-[10px] font-bold uppercase text-cyan-700">IT va SI Koordinatori</div>
+                    <div class="text-xs font-extrabold text-slate-900 mt-0.5">Hotamov Uluḡbek Umedoviç</div>
+                    <button
+                      type="button"
+                      onclick="document.getElementById('reviewerFileInput').click()"
+                      class="mt-2 w-full py-1.5 px-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-[11px] font-bold flex items-center justify-center gap-1 shadow cursor-pointer"
+                    >
+                      <i class="fa-solid fa-camera"></i>
+                      <span>1000019451.jpg</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Upload Button Overlay -->
+                <button
+                  type="button"
+                  onclick="document.getElementById('reviewerFileInput').click()"
+                  class="absolute top-2.5 right-2.5 px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white glass-card text-[11px] font-bold flex items-center gap-1.5 shadow-lg transition-all cursor-pointer"
+                  title="Muharrir va Taqrizçi rasmini (1000019451.jpg) yuklaș"
+                >
+                  <i class="fa-solid fa-camera text-cyan-400"></i>
+                  <span>Suratni tanlaș</span>
+                </button>
+                <input id="reviewerFileInput" type="file" accept="image/*" class="hidden" onchange="previewUploadedImage(event, 'reviewerImgPreview', 'reviewerFallback')" />
+              </div>
+
+              <!-- Info Box -->
+              <div class="space-y-3 text-center sm:text-left flex-1">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs font-extrabold">
+                  <i class="fa-solid fa-brain"></i>
+                  Muharrir va Taqrizçi — IT va sun'iy intellekt koordinatori
+                </span>
+                <h3 class="text-xl sm:text-2xl font-extrabold text-white leading-snug">
+                  Hotamov Uluḡbek Umedoviç
+                </h3>
+                <p class="text-xs font-semibold text-cyan-300">
+                  "MEHR" xayriya platformasi va ta'lim portali Muharriri, Taqrizçisi hamda IT va sun'iy intellekt koordinatori
+                </p>
+                <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed pt-1">
+                  "'MEHR' portalidagi raqamli ta'lim dasturlari, sun'iy intellekt yordamida tahlil qilinuvçi şaffof statistika kōrsatkichlari va xayriya loyihalarining texnik-metodik mezonlari ekspertizadan ōtkazilgan bōlib, yoşlarning zamonaviy bilim olişiga xizmat qiladi."
+                </p>
+              </div>
+            </div>
+
+            <!-- Bottom Badges -->
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-white/10 text-xs">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Maqomi:</span>
+                <strong class="text-white">Muharrir va Taqrizçi — IT va sun'iy intellekt koordinatori</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-slate-400 block text-[11px]">Ma'sul yōnaliş:</span>
+                <strong class="text-cyan-400">SI Koordinatsiyasi va Texnik Taqriz</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div class="space-y-1 text-center sm:text-left">
+        <div class="font-black text-slate-800 dark:text-slate-100 text-sm tracking-wide">
+          MEHR — Xayriya Platformasi va Ta'lim Portali © 2026
+        </div>
+        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
+          <span><strong>Asosçi:</strong> Narzullayeva Nilufar Nuraliyevna</span>
+          <span>|</span>
+          <span><strong>Muharrir (IT va sun'iy intellekt koordinatori):</strong> Madiyorov Sardor Firdavsoviç</span>
+          <span>|</span>
+          <span><strong>Muharrir va Taqrizçi (IT va sun'iy intellekt koordinatori):</strong> Hotamov Uluḡbek Umedoviç</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4 font-bold">
+        <button onclick="switchSection('asosçi')" class="hover:text-emerald-500 cursor-pointer">Asosçi</button>
+        <button onclick="switchSection('muharrir')" class="hover:text-emerald-500 cursor-pointer">Muharrirlar</button>
+        <button onclick="openPaymentModal('MEHR Umumiy Fondi')" class="hover:text-emerald-500 cursor-pointer">Tōlov oynasi</button>
+        <button onclick="openAuthModal()" class="hover:text-emerald-500 cursor-pointer">Rōyxatdan ōtiş</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL 1: TŌLOV OYNASI ==================== -->
+  <div id="paymentModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 glass-card">
+    <div class="relative w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-fade">
+      <div class="p-6 bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-2xl bg-white/15"><i class="fa-solid fa-credit-card text-xl"></i></div>
+          <div>
+            <h3 class="text-lg font-extrabold">MEHR — Xavfsiz Tōlov va Xayriya Oynasi</h3>
+            <p class="text-xs text-emerald-100">Uzcard • Humo • Visa • 0% Komissiya</p>
+          </div>
+        </div>
+        <button onclick="closePaymentModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Step 1: Form View -->
+      <div id="paymentFormView" class="p-6 space-y-4">
+        <div class="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="text-[11px] font-bold uppercase text-emerald-600 dark:text-emerald-400">Tanlangan MEHR loyihasi:</span>
+          <div id="modalProjectTitle" class="text-sm font-bold mt-0.5">MEHR: Çekka hudud maktablariga zamonaviy kompyuterlar</div>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold uppercase text-slate-500 block mb-2">Summani tanlang yoki kiriting (sōm):</label>
+          <div class="grid grid-cols-4 gap-2 mb-2.5">
+            <button type="button" onclick="setModalAmount(10000)" class="py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-600 hover:text-white cursor-pointer">10 000</button>
+            <button type="button" onclick="setModalAmount(50000)" class="py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer">50 000</button>
+            <button type="button" onclick="setModalAmount(100000)" class="py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-600 hover:text-white cursor-pointer">100 000</button>
+            <button type="button" onclick="setModalAmount(500000)" class="py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-600 hover:text-white cursor-pointer">500 000</button>
+          </div>
+          <input id="modalAmountInput" type="number" value="50000" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold" />
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2">
+            <label class="text-xs font-semibold block mb-1">Karta raqami (Uzcard / Humo / Visa)</label>
+            <input id="cardInput" type="text" oninput="formatCardInput(this)" value="8600 4924 1234 5678" maxlength="19" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-mono" />
+          </div>
+          <div>
+            <label class="text-xs font-semibold block mb-1">Amal qiliş</label>
+            <input type="text" value="08/28" maxlength="5" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-mono" />
+          </div>
+        </div>
+
+        <input id="donorNameInput" type="text" placeholder="Ismingiz (ixtiyoriy)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+
+        <button onclick="completePayment()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-lg cursor-pointer">
+          Tōlovni tasdiqlaș
+        </button>
+      </div>
+
+      <!-- Step 2: Receipt View -->
+      <div id="paymentSuccessView" class="hidden p-6 text-center space-y-5">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto text-3xl">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <span class="text-xs font-bold uppercase text-emerald-500">MEHR — Elektron Kvitansiya #MEHR-2026</span>
+          <h4 id="receiptAmountText" class="text-2xl font-extrabold mt-1">50 000 sōm</h4>
+          <p class="text-xs text-slate-500 mt-1">Ehsoningiz uçun taşakkur! Mablaḡ "MEHR" şaffof reyestriga muvaffaqiyatli qayd etildi.</p>
+        </div>
+        <button onclick="closePaymentModal()" class="w-full py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm cursor-pointer">
+          Yopiş
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: RŌYXATDAN ŌTIŞ OYNASI ==================== -->
+  <div id="authModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 glass-card">
+    <div class="relative w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-fade">
+      <div class="p-6 bg-gradient-to-r from-indigo-600 to-violet-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-2xl bg-white/15"><i class="fa-solid fa-user-plus text-xl"></i></div>
+          <div>
+            <h3 class="text-lg font-extrabold">MEHR — Rōyxatdan ōtiş oynasi</h3>
+            <p class="text-xs text-indigo-100">Ōquvçi • Xayriyaçi • Volontyor</p>
+          </div>
+        </div>
+        <button onclick="closeAuthModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitAuthForm(event)" class="p-6 space-y-4">
+        <div>
+          <label class="text-xs font-bold text-slate-500 block mb-2">"MEHR" platformasidagi rolingizni tanlang:</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="selectRole('Ōquvçi', this)" class="role-btn p-2.5 rounded-xl border border-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold cursor-pointer">Ōquvçi</button>
+            <button type="button" onclick="selectRole('Xayriyaçi', this)" class="role-btn p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer">Xayriyaçi</button>
+            <button type="button" onclick="selectRole('Volontyor', this)" class="role-btn p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer">Volontyor</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold block mb-1">Ism va familiyangiz</label>
+          <input id="authNameInput" type="text" required placeholder="Masalan: Madiyorov Sardor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold block mb-1">Telefon raqamingiz</label>
+          <input type="text" required value="+998 90 123 45 67" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-lg cursor-pointer">
+          MEHR hisobini yaratiş
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    let currentHeroAmount = 50000;
+    let selectedUserRole = "Ōquvçi";
+
+    // Alohida mavzular uçun alohida Hero fon rasmlari
+    const HERO_BACKGROUNDS = {
+      'barçasi': 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1920&q=80',
+      'asosçi': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1920&q=80',
+      'xayriya': 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1920&q=80',
+      'talim': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1920&q=80',
+      'xizmatlar': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1920&q=80',
+      'statistika': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80',
+      'muharrir': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1920&q=80'
+    };
+
+    // 1. Yorqin / Qoronḡu rejimni almaştiriş
+    function toggleDarkMode() {
+      const htmlEl = document.documentElement;
+      const isDark = htmlEl.classList.toggle('dark');
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeText');
+      if (isDark) {
+        icon.className = 'fa-solid fa-sun text-amber-400';
+        text.textContent = 'Yorqin';
+      } else {
+        icon.className = 'fa-solid fa-moon text-indigo-600';
+        text.textContent = 'Qoronḡu';
+      }
+    }
+
+    // 2. Bōlimlarni filtrlaș va Hero fon rasmini ōzgartiriş
+    function switchSection(sectionKey) {
+      const heroBg = document.getElementById('heroBackground');
+      if (HERO_BACKGROUNDS[sectionKey]) {
+        heroBg.style.backgroundImage = `url('${HERO_BACKGROUNDS[sectionKey]}')`;
+      }
+
+      const sections = document.querySelectorAll('.page-section');
+      sections.forEach(sec => {
+        if (sectionKey === 'barçasi' || sec.id === `sec-${sectionKey}`) {
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        if (btn.getAttribute('data-nav') === sectionKey) {
+          btn.className = 'nav-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm transition-all cursor-pointer';
+        } else {
+          btn.className = 'nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer';
+        }
+      });
+    }
+
+    // 3. Xizmatlar rōyxatini filtrlaș
+    function filterServiceCards(filterType, btnEl) {
+      document.querySelectorAll('.srv-filter-btn').forEach(b => {
+        b.className = 'srv-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 cursor-pointer';
+      });
+      btnEl.className = 'srv-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer';
+
+      document.querySelectorAll('.srv-card').forEach(card => {
+        if (filterType === 'barçasi' || card.getAttribute('data-srv-type') === filterType) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 4. Foydalanuvçi kompyuteridan yoki telefonidan Asosçi / Muharrir rasmini yuklaganda darhol kōrsatiş
+    function previewUploadedImage(event, imgElementId, fallbackElementId) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imgEl = document.getElementById(imgElementId);
+        const fallbackEl = document.getElementById(fallbackElementId);
+        imgEl.src = e.target.result;
+        imgEl.style.display = 'block';
+        if (fallbackEl) fallbackEl.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 5. Hero tezkor summa tanlaș
+    function setQuickHeroAmount(amount, btnEl) {
+      currentHeroAmount = amount;
+      document.getElementById('heroDonateBtnLabel').textContent =
+        new Intl.NumberFormat('uz-UZ').format(amount) + ' sōm tōlovga ōtiş';
+      if (btnEl) {
+        document.querySelectorAll('.hero-amt-btn').forEach(b => {
+          b.className = 'hero-amt-btn py-2.5 px-2 rounded-xl text-xs font-bold border bg-white/10 border-white/15 text-slate-200 hover:bg-white/20 cursor-pointer';
+        });
+        btnEl.className = 'hero-amt-btn py-2.5 px-2 rounded-xl text-xs font-bold border bg-emerald-500 border-emerald-400 text-white shadow-lg cursor-pointer';
+      }
+    }
+
+    function openPaymentFromHero() {
+      const proj = document.getElementById('heroProjectSelect').value;
+      openPaymentModal(proj, currentHeroAmount);
+    }
+
+    // 6. Karta raqamini formatlaș
+    function formatCardInput(inputEl) {
+      let digits = inputEl.value.replace(/\D/g, '').substring(0, 16);
+      inputEl.value = digits.match(/.{1,4}/g)?.join(' ') || digits;
+    }
+
+    // 7. Tōlov oynasini oçiş va yopiş
+    function openPaymentModal(projectTitle, amount) {
+      document.getElementById('modalProjectTitle').textContent = projectTitle;
+      if (amount) {
+        document.getElementById('modalAmountInput').value = amount;
+      }
+      document.getElementById('paymentFormView').classList.remove('hidden');
+      document.getElementById('paymentSuccessView').classList.add('hidden');
+      const modal = document.getElementById('paymentModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closePaymentModal() {
+      const modal = document.getElementById('paymentModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function setModalAmount(amt) {
+      document.getElementById('modalAmountInput').value = amt;
+    }
+
+    function completePayment() {
+      const amt = Number(document.getElementById('modalAmountInput').value || 50000);
+      document.getElementById('receiptAmountText').textContent =
+        new Intl.NumberFormat('uz-UZ').format(amt) + ' sōm';
+      document.getElementById('paymentFormView').classList.add('hidden');
+      document.getElementById('paymentSuccessView').classList.remove('hidden');
+    }
+
+    // 8. Rōyxatdan ōtiş oynasini boşqariş
+    function openAuthModal() {
+      const modal = document.getElementById('authModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeAuthModal() {
+      const modal = document.getElementById('authModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function selectRole(role, btnEl) {
+      selectedUserRole = role;
+      document.querySelectorAll('.role-btn').forEach(b => {
+        b.className = 'role-btn p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer';
+      });
+      btnEl.className = 'role-btn p-2.5 rounded-xl border border-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold cursor-pointer';
+    }
+
+    function submitAuthForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('authNameInput').value || 'Foydalanuvçi';
+      document.getElementById('navUserText').textContent = `${name} (${selectedUserRole})`;
+      closeAuthModal();
+    }
+  </script>
+</body>
+</html>
