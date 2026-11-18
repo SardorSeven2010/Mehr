@@ -41,7 +41,9 @@ Ilova HTTPS orqali joylaştirilgandan sōng:
 
 ## Joylaştiriş (hosting)
 
-`npm run build` yaratgan `dist/` papkasini istalgan statik hostingga yuklang: GitHub Pages, Netlify, Vercel, Cloudflare Pages yoki ōz serveringiz. Ilova nisbiy yōllardan foydalanadi, şuning uçun pastki papkada ham ișlaydi. PWA (ōrnatiş va oflayn rejim) faqat **HTTPS**da ișlaydi.
+**GitHub Pages (avtomatik):** repozitoriyda `.github/workflows/deploy.yml` bor. Bir marta **Settings → Pages → Build and deployment → Source: GitHub Actions** ni tanlang — şundan keyin har bir push ilovani avtomatik yangilaydi. Manzil: `https://sardorseven2010.github.io/Mehr/`
+
+**Boşqa hosting:** `npm run build` yaratgan `dist/` papkasini istalgan statik hostingga yuklang: GitHub Pages, Netlify, Vercel, Cloudflare Pages yoki ōz serveringiz. Ilova nisbiy yōllardan foydalanadi, şuning uçun pastki papkada ham ișlaydi. PWA (ōrnatiş va oflayn rejim) faqat **HTTPS**da ișlaydi.
 
 ## Ma'lumotlarni tahrirlaş
 
