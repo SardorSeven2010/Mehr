@@ -1,0 +1,8 @@
+{
+  "appId": "uz.mehr.app",
+  "appName": "MEHR",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#0f172a"
+  }
+}

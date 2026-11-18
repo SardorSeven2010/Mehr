@@ -3,6 +3,7 @@ import { COURSES, COURSE_CATEGORIES, TEAM } from '../data.js';
 import { store } from '../store.js';
 import { $, esc, fmt, fmtDate, openModal, pct, toast } from '../utils.js';
 import { requireUser } from '../modals/auth.js';
+import { isNative, nativeShareImage } from '../native.js';
 
 let activeCategory = 'all';
 let query = '';
@@ -307,9 +308,19 @@ async function downloadCertificate(id) {
   ctx.font = `500 18px ${F}`;
   ctx.fillText(`Sertifikat ID: MEHR-${id.toUpperCase().slice(0, 6)}-${new Date(e.completedAt || Date.now()).getTime().toString(36).toUpperCase()}`, W / 2, 1018);
 
+  const fileName = `MEHR-sertifikat-${id}.png`;
+  const dataUrl = canvas.toDataURL('image/png');
+  if (isNative) {
+    try {
+      await nativeShareImage(dataUrl, fileName, 'MEHR sertifikati');
+    } catch {
+      toast("Sertifikatni saqlab bōlmadi. Qaytadan urinib kōring.", 'error');
+    }
+    return;
+  }
   const link = document.createElement('a');
-  link.download = `MEHR-sertifikat-${id}.png`;
-  link.href = canvas.toDataURL('image/png');
+  link.download = fileName;
+  link.href = dataUrl;
   link.click();
   toast('Sertifikat yuklab olindi.');
 }

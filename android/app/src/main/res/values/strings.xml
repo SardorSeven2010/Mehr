@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MEHR</string>
+    <string name="title_activity_main">MEHR</string>
+    <string name="package_name">uz.mehr.app</string>
+    <string name="custom_url_scheme">uz.mehr.app</string>
+</resources>

@@ -45,6 +45,17 @@ Ilova HTTPS orqali joylaştirilgandan sōng:
 
 **Boşqa hosting:** `npm run build` yaratgan `dist/` papkasini istalgan statik hostingga yuklang: GitHub Pages, Netlify, Vercel, Cloudflare Pages yoki ōz serveringiz. Ilova nisbiy yōllardan foydalanadi, şuning uçun pastki papkada ham ișlaydi. PWA (ōrnatiş va oflayn rejim) faqat **HTTPS**da ișlaydi.
 
+## Android ilovasi (APK)
+
+Ilova [Capacitor](https://capacitorjs.com/) yordamida Android ilovasiga ōralgan (`android/` papkasi, paket nomi `uz.mehr.app`).
+
+- **Tayyor APK:** har bir push'dan keyin GitHub Actions APK'ni yiḡadi va repozitoriyning **Releases** sahifasiga `MEHR.apk` qilib joylaydi. Telefondan şu sahifani oçib, faylni yuklab oling va ōrnating (telefon "noma'lum manbalardan ōrnatiş"ga ruxsat sōraydi).
+- **Kompyuterda yiḡiş:** Android Studio (yoki Android SDK) va JDK 21 kerak. `npm run android:apk` → `android/app/build/outputs/apk/debug/app-debug.apk`.
+- Veb-kodni ōzgartirgandan keyin `npm run android:sync` ni ișga tușiring.
+- Ikonka va splash manbalari: `assets/` (`npx @capacitor/assets generate --android` bilan qayta yaratiladi).
+
+Hozirgi APK — sinov (debug) imzosi bilan. Google Play uçun alohida imzo kaliti bilan AAB fayl kerak bōladi.
+
 ## Ma'lumotlarni tahrirlaş
 
 Barça matn va raqamlar bitta faylda: **`src/data.js`**

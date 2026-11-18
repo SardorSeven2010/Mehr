@@ -8,7 +8,7 @@ import './styles.css';
 
 import { HERO_BACKGROUNDS, PROJECTS, GENERAL_FUND, QUICK_AMOUNTS, SECTIONS, findFund } from './data.js';
 import { store } from './store.js';
-import { $, $$, closeAllModals, esc, fmt, fmtSom, initModals } from './utils.js';
+import { $, $$, closeAllModals, closeTopModal, esc, fmt, fmtSom, hasOpenModal, initModals } from './utils.js';
 import { shareOrCopy } from './share.js';
 import { initCharity } from './sections/charity.js';
 import { initCourses } from './sections/courses.js';
@@ -18,6 +18,7 @@ import { initTeam } from './sections/team.js';
 import { initPayment, openPayment } from './modals/payment.js';
 import { initAuth, openAuth } from './modals/auth.js';
 import { initPWA } from './pwa.js';
+import { initNative, setSystemBarsTheme } from './native.js';
 
 const KEYS = SECTIONS.map((s) => s.key);
 
@@ -31,6 +32,7 @@ function applyTheme(dark) {
   $('#themeIcon').className = dark ? 'fa-solid fa-sun text-amber-400' : 'fa-solid fa-moon text-indigo-600';
   $('#themeText').textContent = dark ? 'Yorqin' : 'Qoronḡu';
   document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#0f172a' : '#059669');
+  setSystemBarsTheme(dark);
 }
 
 function initTheme() {
@@ -172,6 +174,7 @@ initPayment();
 initAuth();
 initGlobalActions();
 initPWA();
+initNative({ hasOpenModal, closeTopModal });
 
 window.addEventListener('hashchange', () => {
   const h = decodeURIComponent(location.hash.slice(1));

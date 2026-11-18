@@ -135,6 +135,9 @@ export function closeModal(id) {
   modal._returnFocus?.focus?.({ preventScroll: true });
 }
 
+export const hasOpenModal = () => openStack.length > 0;
+export const closeTopModal = () => openStack.length && closeModal(openStack[openStack.length - 1]);
+
 export function closeAllModals() {
   [...openStack].reverse().forEach(closeModal);
 }

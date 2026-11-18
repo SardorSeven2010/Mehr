@@ -81,6 +81,13 @@
   .photo-upload:focus-within { opacity: 1; }
 }
 
+/* Android ilovasida "ōrnatiş" tugmalari kerak emas */
+.native-app [data-install],
+.native-app [data-install-help] { display: none !important; }
+
+/* Pastdan çiquvçi oynalar tizim panelining ostida qolmasin */
+.modal-panel { padding-bottom: env(safe-area-inset-bottom); }
+
 /* Maxsus scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.05); }

@@ -1,0 +1,71 @@
+# MEHR Android ilovasini (APK) yiḡiş va Releases sahifasiga joylaş.
+name: Android APK
+
+on:
+  push:
+    branches: [ccr-8a9aebcf-96y9b4]
+    paths-ignore: ['**.md']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    env:
+      MEHR_VERSION_CODE: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      # Bir xil imzo kaliti — yangi versiya eskisining ustiga ōrnatilişi uçun
+      - name: Imzo kalitini tiklaş
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: mehr-debug-keystore-v1
+
+      - run: npm ci
+      - run: npm run build
+      - run: npx cap sync android
+
+      - name: APK yiḡiş
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Faylni nomlaş
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk MEHR.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MEHR-apk
+          path: MEHR.apk
+
+      - name: Releases sahifasiga joylaş
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="apk-v1.0.${MEHR_VERSION_CODE}"
+          gh release create "$TAG" MEHR.apk \
+            --target "$GITHUB_SHA" \
+            --title "MEHR ilovasi — Android APK (1.0.${MEHR_VERSION_CODE})" \
+            --notes-file .github/apk-release-notes.md \
+            --latest \
+          || gh release upload "$TAG" MEHR.apk --clobber

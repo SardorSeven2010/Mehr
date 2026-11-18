@@ -1,5 +1,6 @@
 // PWA: oflayn işlaş (service worker) va ilovani ōrnatiş
 import { $, $$, closeModal, openModal, toast } from './utils.js';
+import { isNative } from './native.js';
 
 let deferredPrompt = null;
 
@@ -10,7 +11,7 @@ const setInstallVisible = (visible) =>
   });
 
 export function initPWA() {
-  if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  if (!isNative && 'serviceWorker' in navigator && import.meta.env.PROD) {
     const hadController = !!navigator.serviceWorker.controller;
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
@@ -21,6 +22,7 @@ export function initPWA() {
   }
 
   window.addEventListener('beforeinstallprompt', (e) => {
+    if (isNative) return;
     e.preventDefault();
     deferredPrompt = e;
     setInstallVisible(true);

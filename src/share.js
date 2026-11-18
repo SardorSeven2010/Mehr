@@ -1,7 +1,10 @@
 import { toast } from './utils.js';
+import { isNative, nativeShare } from './native.js';
 
 /** Tizimning "Ulaşiş" oynasi, bōlmasa — matnni nusxalaş */
-export async function shareOrCopy({ title, text, url = location.href.split('#')[0] }) {
+export async function shareOrCopy({ title, text, url }) {
+  if (isNative) return nativeShare({ title, text, url });
+  url = url || location.href.split('#')[0];
   if (navigator.share) {
     try {
       await navigator.share({ title, text, url });
