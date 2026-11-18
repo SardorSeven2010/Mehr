@@ -16,11 +16,11 @@
 
 Qōşimça:
 - **Tōlov oynasi** — summa, karta raqami (Uzcard/Humo/Visa aniqlanadi), muddat tekşiruvi, anonim ehson, elektron kvitansiya va ulaşiş.
-- **Rōyxatdan ōtiş** (Ōquvçi / Xayriyaçi / Volontyor) va **"Mening hisobim"** — kurslar natijasi va ehsonlar tarixi.
+- **Kiriş / rōyxatdan ōtiş** — email va poçtaga kelgan kod orqali (CORE kabi), rol: Ōquvçi / Xayriyaçi / Volontyor; **"Mening hisobim"** — kurslar natijasi va ehsonlar tarixi.
 - **Yorqin / qoronḡu rejim** (tanlov eslab qolinadi, boşida tizim sozlamasiga moslaşadi).
 - Bōlimlar manzilda saqlanadi (`#xayriya`, `#talim`...) — "Orqaga" tugmasi ișlaydi, havolani ulaşiş mumkin.
 - Jamoa suratlarini ilova ichidan tanlaş (surat şu qurilmada saqlanadi).
-- Barça ma'lumotlar foydalanuvçi qurilmasida (`localStorage`) saqlanadi.
+- Hisob (email, ism, rol) serverda (Supabase); kurs natijalari va ehsonlar hozircha foydalanuvçi qurilmasida (`localStorage`) saqlanadi.
 
 ## Ișga tușiriş
 
@@ -44,6 +44,15 @@ Ilova HTTPS orqali joylaştirilgandan sōng:
 **GitHub Pages (avtomatik):** repozitoriyda `.github/workflows/deploy.yml` bor. Bir marta **Settings → Pages → Build and deployment → Source: GitHub Actions** ni tanlang — şundan keyin har bir push ilovani avtomatik yangilaydi. Manzil: `https://sardorseven2010.github.io/Mehr/`
 
 **Boşqa hosting:** `npm run build` yaratgan `dist/` papkasini istalgan statik hostingga yuklang: GitHub Pages, Netlify, Vercel, Cloudflare Pages yoki ōz serveringiz. Ilova nisbiy yōllardan foydalanadi, şuning uçun pastki papkada ham ișlaydi. PWA (ōrnatiş va oflayn rejim) faqat **HTTPS**da ișlaydi.
+
+## Kiriş va rōyxatdan ōtiş
+
+CORE ilovasidagi kabi: foydalanuvçi emailini kiritadi → poçtasiga bir martalik kod keladi → kodni kiritib kiradi (parol yōq). Birinçi marta kirganda ismi, roli va (ixtiyoriy) telefon raqami sōraladi.
+
+- Server: **Supabase Auth** (`src/config.js`). Hozir CORE bilan bir xil Supabase loyihasi ișlatiladi — u yerda email orqali kod yuboriş allaqaçon sozlangan. MEHR profili foydalanuvçining `user_metadata` sida `mehr_name`, `mehr_role`, `mehr_phone` kalitlari bilan saqlanadi, CORE jadvallariga tegilmaydi.
+- MEHR uçun alohida Supabase loyihasi kerak bōlsa: loyiha oçing, **Authentication → Emails → Magic Link** şablonida kod (`{{ .Token }}`) bōlişini tekşiring va `src/config.js` dagi `SUPABASE_URL` / `SUPABASE_KEY` ni almaştiring.
+- `REQUIRE_LOGIN = true` — ilova kiriş oynasi bilan oçiladi. `false` qilinsa, kiriş ixtiyoriy bōladi (kursga yoziliş kabi amallarda sōraladi).
+- Sessiya qurilmada saqlanadi: ilova qayta oçilganda yana kod sōralmaydi. "Hisobdan çiqiş" faqat şu qurilmadan çiqaradi.
 
 ## Android ilovasi (APK)
 

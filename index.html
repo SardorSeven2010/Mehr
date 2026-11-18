@@ -21,7 +21,10 @@
         var s = JSON.parse(localStorage.getItem('mehr:v1') || '{}');
         var dark = s.theme ? s.theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (dark) document.documentElement.classList.add('dark');
-      } catch (e) {}
+        if (!localStorage.getItem('mehr-auth')) document.documentElement.classList.add('auth-pending');
+      } catch (e) {
+        document.documentElement.classList.add('auth-pending');
+      }
     })();
   </script>
 </head>
@@ -67,7 +70,7 @@
 
         <button id="navUserBtn" type="button" class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-indigo-500/20 transition-all cursor-pointer max-w-[11rem] sm:max-w-[16rem]">
           <i id="navUserIcon" class="fa-solid fa-user-plus"></i>
-          <span id="navUserText" class="truncate hidden min-[420px]:inline">Rōyxatdan ōtiş</span>
+          <span id="navUserText" class="truncate hidden min-[420px]:inline">Kiriş</span>
         </button>
       </div>
     </div>
@@ -113,7 +116,7 @@
             </button>
             <button type="button" data-auth class="flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-indigo-600/80 hover:bg-indigo-600 glass-card border border-indigo-400/30 text-white font-semibold text-sm transition-all cursor-pointer">
               <i class="fa-solid fa-user-plus"></i>
-              <span>Rōyxatdan ōtiş</span>
+              <span data-auth-label="Rōyxatdan ōtiş">Rōyxatdan ōtiş</span>
             </button>
           </div>
 
@@ -487,7 +490,7 @@
         <button type="button" data-nav="asoschi" class="hover:text-emerald-500 cursor-pointer">Asosçi</button>
         <button type="button" data-nav="muharrir" class="hover:text-emerald-500 cursor-pointer">Muharrirlar</button>
         <button type="button" data-donate="umumiy" class="hover:text-emerald-500 cursor-pointer">Tōlov oynasi</button>
-        <button type="button" data-auth class="hover:text-emerald-500 cursor-pointer">Rōyxatdan ōtiş</button>
+        <button type="button" data-auth class="hover:text-emerald-500 cursor-pointer"><span data-auth-label="Rōyxatdan ōtiş">Rōyxatdan ōtiş</span></button>
         <button type="button" data-install-help class="hover:text-emerald-500 cursor-pointer"><i class="fa-solid fa-mobile-screen-button mr-1"></i>Ilovani ōrnatiş</button>
       </div>
     </div>
@@ -578,39 +581,94 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 2: RŌYXATDAN ŌTIŞ ==================== -->
-  <div id="authModal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4 bg-slate-950/75 glass-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-    <div class="modal-panel relative w-full sm:max-w-md max-h-[94vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-fade">
-      <div class="p-5 sm:p-6 bg-gradient-to-r from-indigo-600 to-violet-700 text-white flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div class="p-2.5 rounded-2xl bg-white/15"><i class="fa-solid fa-user-plus text-xl"></i></div>
-          <div>
-            <h3 id="authTitle" class="text-base sm:text-lg font-extrabold">MEHR — Rōyxatdan ōtiş oynasi</h3>
-            <p class="text-xs text-indigo-100">Ōquvçi • Xayriyaçi • Volontyor</p>
-          </div>
-        </div>
-        <button type="button" data-close class="p-2 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Yopiş"><i class="fa-solid fa-xmark"></i></button>
-      </div>
+  <!-- ==================== KIRIŞ VA RŌYXATDAN ŌTIŞ (EMAIL + KOD, CORE kabi) ==================== -->
+  <div id="authScreen" class="fixed inset-0 z-[60] overflow-y-auto bg-gradient-to-br from-emerald-950 via-slate-950 to-indigo-950" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div id="authBg" class="fixed inset-0 bg-cover bg-center opacity-80"></div>
+    <div class="fixed inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/35 to-slate-950/90"></div>
+    <button id="authClose" type="button" class="hidden fixed z-10 top-[calc(1rem+env(safe-area-inset-top))] right-4 w-10 h-10 rounded-xl bg-white/15 hover:bg-white/25 text-white cursor-pointer" aria-label="Yopiş"><i class="fa-solid fa-xmark"></i></button>
 
-      <form id="authForm" novalidate class="p-5 sm:p-6 space-y-4">
-        <p id="authNote" class="hidden items-center gap-2 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-200 text-xs font-semibold"></p>
-        <div>
-          <span class="text-xs font-bold text-slate-500 block mb-2">"MEHR" platformasidagi rolingizni tanlang:</span>
-          <div id="authRoles" class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Rol"></div>
+    <div class="relative min-h-full flex items-center justify-center px-5 pt-[calc(2.5rem+env(safe-area-inset-top))] pb-[calc(2.5rem+env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-md space-y-7 animate-fade">
+        <div class="flex flex-col items-center text-center gap-3">
+          <div class="p-4 rounded-[28px] bg-white shadow-2xl shadow-black/40">
+            <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-500 to-indigo-600 text-white flex items-center justify-center">
+              <i class="fa-solid fa-hand-holding-heart text-5xl"></i>
+            </div>
+          </div>
+          <div class="text-4xl font-black tracking-[0.2em] text-white drop-shadow">MEHR</div>
+          <p class="text-sm text-white/85">Xayriya platformasi va ta'lim portali</p>
         </div>
-        <div>
-          <label for="authName" class="text-xs font-semibold block mb-1">Ism va familiyangiz</label>
-          <input id="authName" type="text" maxlength="60" autocomplete="name" placeholder="Masalan: Madiyorov Sardor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
-          <p data-error-for="authName" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+
+        <div class="rounded-[26px] bg-black/40 glass-card border border-white/20 p-5 sm:p-6 text-white shadow-2xl">
+          <!-- Yuklanmoqda -->
+          <div data-auth-step="loading" class="py-10 flex justify-center text-white/80"><i class="fa-solid fa-spinner fa-spin text-2xl"></i></div>
+
+          <!-- 1-qadam: email -->
+          <form id="authEmailForm" data-auth-step="email" class="hidden space-y-4" novalidate>
+            <div class="text-center space-y-1">
+              <h2 id="authTitle" class="text-lg font-bold">Kiriş yoki rōyxatdan ōtiş</h2>
+              <p class="text-[13px] text-white/75">Emailingizni kiriting, biz tasdiqlaş kodini yuboramiz</p>
+            </div>
+            <p id="authNote" class="hidden px-3 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-400/30 text-xs font-semibold text-emerald-50"></p>
+            <div>
+              <label for="authEmail" class="sr-only">Elektron poçtangiz (Email)</label>
+              <div class="relative">
+                <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-white/60"></i>
+                <input id="authEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="Elektron poçtangiz (Email)" class="auth-input pl-11" />
+              </div>
+              <p data-error-for="authEmail" class="hidden mt-1.5 text-xs font-semibold text-rose-300"></p>
+            </div>
+            <button type="submit" class="auth-btn">Tasdiqlaş kodini oliş</button>
+          </form>
+
+          <!-- 2-qadam: kod -->
+          <form id="authCodeForm" data-auth-step="code" class="hidden space-y-4" novalidate>
+            <div class="text-center space-y-1">
+              <h2 class="text-lg font-bold">Kodni kiriting</h2>
+              <p class="text-[13px] text-white/75"><strong id="authSentTo" class="text-white break-all"></strong> manziliga tasdiqlaş kodi yuborildi</p>
+            </div>
+            <div>
+              <label for="authCode" class="sr-only">Poçtaga kelgan kod</label>
+              <div class="relative">
+                <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-white/60"></i>
+                <input id="authCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Poçtaga kelgan kod" class="auth-input pl-11 text-lg font-bold tracking-[0.3em] placeholder:tracking-normal placeholder:font-normal placeholder:text-base" />
+              </div>
+              <p data-error-for="authCode" class="hidden mt-1.5 text-xs font-semibold text-rose-300"></p>
+            </div>
+            <button type="submit" class="auth-btn">Tasdiqlaş va kiriş</button>
+            <div class="flex items-center justify-between gap-3 text-xs font-semibold">
+              <button id="authChangeEmail" type="button" class="text-white/85 hover:text-white underline-offset-2 hover:underline cursor-pointer">Elektron poçtani ōzgartiriş</button>
+              <button id="authResend" type="button" class="text-emerald-300 hover:text-emerald-200 disabled:text-white/45 disabled:cursor-not-allowed cursor-pointer" disabled>Qayta yuboriş</button>
+            </div>
+            <p class="text-center text-[11px] text-white/60"><i class="fa-solid fa-circle-info mr-1"></i>Xat kelmasa, "Spam" papkasini ham tekşiring.</p>
+          </form>
+
+          <!-- 3-qadam: profil (yangi foydalanuvçi uçun) -->
+          <form id="authProfileForm" data-auth-step="profile" class="hidden space-y-4" novalidate>
+            <div class="text-center space-y-1">
+              <h2 class="text-lg font-bold">Profilingizni tōldiring</h2>
+              <p class="text-[13px] text-white/75">Ismingiz hisobingizda va kurs sertifikatlarida kōrinadi</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white/70 block mb-2">"MEHR" platformasidagi rolingiz:</span>
+              <div id="authRoles" class="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Rol"></div>
+            </div>
+            <div>
+              <label for="authName" class="text-xs font-semibold text-white/80 block mb-1">Ism va familiyangiz</label>
+              <input id="authName" type="text" maxlength="60" autocomplete="name" placeholder="Masalan: Madiyorov Sardor" class="auth-input" />
+              <p data-error-for="authName" class="hidden mt-1.5 text-xs font-semibold text-rose-300"></p>
+            </div>
+            <div>
+              <label for="authPhone" class="text-xs font-semibold text-white/80 block mb-1">Telefon raqamingiz <span class="text-white/50">(ixtiyoriy)</span></label>
+              <input id="authPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 90 123 45 67" maxlength="17" class="auth-input" />
+              <p data-error-for="authPhone" class="hidden mt-1.5 text-xs font-semibold text-rose-300"></p>
+            </div>
+            <button type="submit" class="auth-btn">Davom etiş</button>
+          </form>
         </div>
-        <div>
-          <label for="authPhone" class="text-xs font-semibold block mb-1">Telefon raqamingiz</label>
-          <input id="authPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 90 123 45 67" maxlength="17" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
-          <p data-error-for="authPhone" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
-        </div>
-        <p class="text-[11px] text-slate-500 dark:text-slate-400"><i class="fa-solid fa-shield-halved mr-1"></i>Ma'lumotlaringiz faqat şu qurilmada saqlanadi.</p>
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-lg cursor-pointer">MEHR hisobini yaratiş</button>
-      </form>
+
+        <p class="text-center text-[11px] text-white/55"><i class="fa-solid fa-shield-halved mr-1"></i>Parol kerak emas — har safar emailingizga bir martalik kod yuboriladi.</p>
+      </div>
     </div>
   </div>
 
