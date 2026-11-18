@@ -1,20 +1,28 @@
-// Asosçi va muharrirlar suratlari: standart fayl → saqlangan surat → zaxira kartoçka
+// Asosçi va muharrirlar suratlari: ilovadagi fayl → qurilmada saqlangan surat → zaxira kartoçka
 import { TEAM } from '../data.js';
 import { getPhoto, setPhoto } from '../store.js';
 import { $$, toast } from '../utils.js';
 
 const MAX_SIDE = 720;
 
-function showImage(frame, src) {
+/**
+ * Suratni kōrsatadi. Ilovaga joylangan rasm kōrinsa — "Suratni tanlaş" tugmasi yaşiriladi;
+ * u faqat rasm topilmaganda (yoki foydalanuvçi ōzi tanlagan surat kōringanda) çiqadi.
+ */
+function showImage(frame, src, { bundled = false, onFail } = {}) {
   const img = frame.querySelector('[data-photo-img]');
   const fallback = frame.querySelector('[data-photo-fallback]');
+  const upload = frame.querySelector('.photo-upload');
   img.onload = () => {
     img.classList.remove('hidden');
     fallback.classList.add('hidden');
+    upload?.classList.toggle('hidden', bundled);
   };
   img.onerror = () => {
+    if (onFail) return onFail();
     img.classList.add('hidden');
     fallback.classList.remove('hidden');
+    upload?.classList.remove('hidden');
   };
   img.src = src;
 }
@@ -45,7 +53,11 @@ export function initTeam() {
   $$('[data-photo]').forEach((frame) => {
     const key = frame.dataset.photo;
     const saved = getPhoto(key);
-    showImage(frame, saved || TEAM[key]?.photo);
+    frame.querySelector('.photo-upload')?.classList.add('hidden');
+    showImage(frame, TEAM[key]?.photo, {
+      bundled: true,
+      onFail: () => showImage(frame, saved || TEAM[key]?.photo),
+    });
 
     frame.querySelector('[data-photo-input]')?.addEventListener('change', async (e) => {
       const file = e.target.files?.[0];

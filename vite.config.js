@@ -18,6 +18,9 @@ function mehrServiceWorker() {
         'icons/icon-512.png',
         'icons/maskable-512.png',
         'icons/apple-touch-icon.png',
+        'images/1000019450.jpg',
+        'images/1000019418.jpg',
+        'images/1000019451.jpg',
       ];
       const built = Object.keys(bundle).filter((f) => !/\.(map|ttf)$/.test(f) && !/inter-(greek|vietnamese)/.test(f) && f !== 'sw.js');
       const urls = [...new Set([...publicFiles, ...built])];

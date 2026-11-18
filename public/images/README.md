@@ -1,6 +1,6 @@
 # Jamoa suratlari
 
-Quyidagi fayllarni şu papkaga joylaştiring — ilova ularni avtomatik kōrsatadi:
+Ilova quyidagi suratlarni avtomatik kōrsatadi (almaştiriş uçun faylni xuddi şu nom bilan yangisiga almaştiring):
 
 | Fayl | Kim |
 |------|-----|
