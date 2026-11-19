@@ -7,7 +7,7 @@ const PHOTO_KEY = (name) => `mehr:photo:${name}`;
 const defaults = () => ({
   theme: null, // 'dark' | 'light' | null (tizim sozlamasi)
   user: null, // { name, phone, role, createdAt }
-  donations: [], // { id, fund, amount, donor, anonymous, cardMask, date }
+  donations: [], // { id, fund, amount, donor, anonymous, toCard, date } — foydalanuvçi ōzi qayd etgan ōtkazmalar
   enrollments: {}, // { [courseId]: { enrolledAt, done: number[], completedAt? } }
 });
 

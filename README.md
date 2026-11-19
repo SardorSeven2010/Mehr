@@ -15,7 +15,7 @@
 | **Muharrirlar** | Madiyorov Sardor Firdavsoviç va Hotamov Uluḡbek Umedoviç |
 
 Qōşimça:
-- **Tōlov oynasi** — summa, karta raqami (Uzcard/Humo/Visa aniqlanadi), muddat tekşiruvi, anonim ehson, elektron kvitansiya va ulaşiş.
+- **Ehson oynasi** — loyiha va summa tanlanadi, MEHR ehson kartasi raqami kōrsatiladi (bir bosişda nusxalanadi). Xayriyaçi pulni ōz bank ilovasi orqali ōtkazadi va «Ōtkazdim» tugmasini bosadi — ehson «Mening ehsonlarim»ga yoziladi. Ilova pul yeçmaydi va xayriyaçining karta ma'lumotlarini sōramaydi.
 - **Kiriş / rōyxatdan ōtiş** — email va poçtaga kelgan kod orqali (CORE kabi), rol: Ōquvçi / Xayriyaçi / Volontyor; **"Mening hisobim"** — kurslar natijasi va ehsonlar tarixi.
 - **Yorqin / qoronḡu rejim** (tanlov eslab qolinadi, boşida tizim sozlamasiga moslaşadi).
 - Bōlimlar manzilda saqlanadi (`#xayriya`, `#talim`...) — "Orqaga" tugmasi ișlaydi, havolani ulaşiş mumkin.
@@ -73,7 +73,9 @@ Barça matn va raqamlar bitta faylda: **`src/data.js`**
 - `SERVICES` — xizmatlar
 - `STATS` — hududlar va oylik tuşumlar
 - `REGISTRY_SEED` — reyestrdagi namuna yozuvlar
-- `DEMO_MODE` — `true` bōlsa, tōlov oynasida va statistikada "demo" ogohlantiriși kōrinadi
+- `DEMO_MODE` — `true` bōlsa, statistikada "demo" ogohlantiriși kōrinadi
+
+**Ehson kartasi:** `src/config.js` dagi `DONATION_CARD_NUMBER` (karta raqami) va `DONATION_CARD_HOLDER` (karta egasi, ixtiyoriy).
 
 > ⚠️ Hozirgi statistika, summalar va reyestr yozuvlari **namuna (demo)** ma'lumotlardir. Ilovani ommaga oçişdan oldin ularni haqiqiy ma'lumotlar bilan almaştiring.
 
@@ -87,7 +89,9 @@ src/main.js             kiriş nuqtasi: mavzu, navigatsiya, umumiy tugmalar
 src/data.js             barça kontent va raqamlar
 src/store.js            qurilmadagi ma'lumotlar ombori
 src/sections/*.js       bōlimlar: xayriya, kurslar, xizmatlar, statistika, jamoa
-src/modals/*.js         tōlov, rōyxatdan ōtiş va profil oynalari
+src/modals/*.js         ehson, rōyxatdan ōtiş va profil oynalari
+src/card.js             ehson kartasi: raqamni kōrsatiş va nusxalaş
+src/config.js           Supabase va ehson kartasi sozlamalari
 src/pwa.js, src/sw.js   oflayn rejim va ōrnatiş
 public/                 manifest, ikonkalar, suratlar
 prototip/               dastlabki HTML prototip
@@ -95,6 +99,6 @@ prototip/               dastlabki HTML prototip
 
 ## Keyingi qadamlar
 
-1. **Haqiqiy tōlov** — Payme, Click yoki Uzum Bank bilan ulaş uçun merchant hisob va server (backend) kerak. Hozir tōlov faqat demo: pul yeçilmaydi, karta raqami hech qayerga yuborilmaydi va saqlanmaydi (faqat oxirgi 4 raqam kvitansiyada).
+1. **Ilova içida tōlov** — Payme, Click yoki Uzum Bank bilan ulaş uçun merchant hisob va server (backend) kerak. Hozir ehson kartaga ōtkazma orqali qilinadi va ōtkazmani ilova tekşirmaydi (yozuvni xayriyaçining ōzi qōşadi).
 2. **Server va ma'lumotlar bazasi** — rōyxatdan ōtiş, reyestr va kurs natijalari barça qurilmalarda umumiy bōlişi uçun.
 3. **Google Play uçun APK/AAB** — tayyor PWA ni [PWABuilder](https://www.pwabuilder.com/) yoki Capacitor yordamida Android paketiga aylantiriş mumkin.

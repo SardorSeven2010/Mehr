@@ -255,10 +255,21 @@
           </div>
           <ol class="space-y-4">
             <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">1</span><div><div class="font-bold">Loyihani tanlang</div><p class="text-xs text-emerald-50/90">Maqsadli fondlardan birini yoki umumiy fondni tanlang.</p></div></li>
-            <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">2</span><div><div class="font-bold">Ehson qiling</div><p class="text-xs text-emerald-50/90">Uzcard, Humo yoki Visa orqali 0% komissiya bilan.</p></div></li>
+            <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">2</span><div><div class="font-bold">Ehson qiling</div><p class="text-xs text-emerald-50/90">Bank ilovangiz orqali MEHR kartasiga ōtkazing.</p></div></li>
             <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">3</span><div><div class="font-bold">Reyestrda kuzating</div><p class="text-xs text-emerald-50/90">Ehsoningiz şaffof reyestrda darhol kōrinadi.</p></div></li>
             <li class="flex gap-3"><span class="w-8 h-8 shrink-0 rounded-xl bg-white/20 flex items-center justify-center font-black">4</span><div><div class="font-bold">Natijani kōring</div><p class="text-xs text-emerald-50/90">Jihozlangan maktablar va ōquvçilar haqida hisobot olasiz.</p></div></li>
           </ol>
+          <div class="rounded-2xl bg-white/15 border border-white/25 p-4 space-y-2.5">
+            <div class="flex items-center justify-between gap-3 text-[11px] font-bold uppercase tracking-wider text-emerald-100">
+              <span>Ehson kartasi</span>
+              <span data-card-brand class="text-sm font-black italic tracking-normal text-white"></span>
+            </div>
+            <div data-card-number class="text-base sm:text-lg font-extrabold tabular-nums tracking-wider whitespace-nowrap select-all" aria-label="Ehson kartasi raqami"></div>
+            <div data-card-holder class="hidden text-xs font-semibold uppercase tracking-wide text-emerald-50/90"></div>
+            <button type="button" data-copy-card class="w-full py-2.5 rounded-xl bg-white text-emerald-700 hover:bg-emerald-50 font-bold text-sm cursor-pointer flex items-center justify-center gap-2">
+              <i class="fa-regular fa-copy"></i><span data-copy-label>Nusxalaş</span>
+            </button>
+          </div>
         </div>
 
         <div class="lg:col-span-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm p-5 sm:p-6 space-y-4">
@@ -509,18 +520,13 @@
           <div class="p-2.5 rounded-2xl bg-white/15"><i class="fa-solid fa-credit-card text-xl"></i></div>
           <div>
             <h3 id="paymentTitle" class="text-base sm:text-lg font-extrabold">MEHR — Xavfsiz Tōlov va Xayriya Oynasi</h3>
-            <p class="text-xs text-emerald-100">Uzcard • Humo • Visa • 0% Komissiya</p>
+            <p class="text-xs text-emerald-100">Kartaga ōtkazma • MEHR komissiya olmaydi</p>
           </div>
         </div>
         <button type="button" data-close class="p-2 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Yopiş"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
       <form id="paymentForm" novalidate class="p-5 sm:p-6 space-y-4">
-        <div id="paymentDemo" class="hidden items-start gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200 text-xs">
-          <i class="fa-solid fa-flask mt-0.5"></i>
-          <span><strong>Demo rejim:</strong> tōlov tizimi hali ulanmagan, hech qanday pul yeçilmaydi va karta ma'lumotlari hech qayerga yuborilmaydi. Haqiqiy karta ma'lumotlarini kiritmang.</span>
-        </div>
-
         <div>
           <label for="payFund" class="text-[11px] font-bold uppercase text-emerald-600 dark:text-emerald-400 block mb-1.5">Tanlangan MEHR loyihasi</label>
           <select id="payFund" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold"></select>
@@ -533,19 +539,26 @@
           <p data-error-for="payAmount" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
         </div>
 
-        <div class="grid grid-cols-3 gap-3">
-          <div class="col-span-2">
-            <label for="payCard" class="text-xs font-semibold block mb-1">Karta raqami (Uzcard / Humo / Visa)</label>
-            <div class="relative">
-              <input id="payCard" type="text" inputmode="numeric" autocomplete="off" placeholder="8600 0000 0000 0000" maxlength="19" class="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-mono" />
-              <span id="payCardBrand" class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400"></span>
+        <div class="rounded-2xl overflow-hidden border border-emerald-200 dark:border-emerald-900/70">
+          <div class="relative p-4 bg-gradient-to-br from-slate-900 via-emerald-900 to-teal-800 text-white">
+            <i class="fa-solid fa-hand-holding-heart absolute -right-3 -bottom-4 text-7xl text-white/10" aria-hidden="true"></i>
+            <div class="relative flex items-center justify-between gap-3 text-[11px] font-bold uppercase tracking-wider text-emerald-100">
+              <span>MEHR ehson kartasi</span>
+              <span data-card-brand class="text-sm font-black italic tracking-normal text-white"></span>
             </div>
-            <p data-error-for="payCard" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+            <div data-card-number class="relative mt-3 text-lg sm:text-xl font-extrabold tabular-nums tracking-wider whitespace-nowrap select-all" aria-label="Ehson kartasi raqami"></div>
+            <div data-card-holder class="hidden relative mt-1 text-xs font-semibold uppercase tracking-wide text-emerald-100"></div>
           </div>
-          <div>
-            <label for="payExp" class="text-xs font-semibold block mb-1">Amal qiliş</label>
-            <input id="payExp" type="text" inputmode="numeric" autocomplete="off" placeholder="OO/YY" maxlength="5" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-mono" />
-            <p data-error-for="payExp" class="hidden mt-1 text-xs font-semibold text-rose-600 dark:text-rose-400"></p>
+          <div class="p-4 bg-emerald-50 dark:bg-emerald-950/40 space-y-3">
+            <button type="button" data-copy-card class="w-full py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 font-bold text-sm cursor-pointer flex items-center justify-center gap-2">
+              <i class="fa-regular fa-copy"></i><span data-copy-label>Karta raqamini nusxalaş</span>
+            </button>
+            <ol class="space-y-1.5 text-xs text-slate-700 dark:text-slate-300 list-decimal pl-4">
+              <li>Bank yoki tōlov ilovangizni oçing.</li>
+              <li>Şu kartaga <strong id="payTransferAmount" class="text-slate-900 dark:text-white">50 000 sōm</strong> ōtkazing.</li>
+              <li>Ōtkazgandan keyin pastdagi tugmani bosing — ehsoningiz «Mening ehsonlarim»ga yoziladi.</li>
+            </ol>
+            <p class="flex items-start gap-1.5 text-[11px] text-slate-500 dark:text-slate-400"><i class="fa-solid fa-shield-halved mt-0.5 text-emerald-600 dark:text-emerald-400"></i><span>MEHR ilovasi pulni ōzi yeçmaydi va sizning karta ma'lumotlaringizni sōramaydi.</span></p>
           </div>
         </div>
 
@@ -558,8 +571,8 @@
         </div>
 
         <button id="paySubmit" type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 disabled:opacity-60 text-white font-extrabold text-sm shadow-lg cursor-pointer flex items-center justify-center gap-2">
-          <i class="fa-solid fa-lock"></i>
-          <span id="paySubmitLabel">Tōlovni tasdiqlaş</span>
+          <i class="fa-solid fa-check"></i>
+          <span id="paySubmitLabel">Ōtkazdim</span>
         </button>
       </form>
 
@@ -568,9 +581,9 @@
           <i class="fa-solid fa-circle-check"></i>
         </div>
         <div>
-          <span id="receiptId" class="text-xs font-bold uppercase text-emerald-600 dark:text-emerald-400">MEHR — Elektron Kvitansiya</span>
+          <span id="receiptId" class="text-xs font-bold uppercase text-emerald-600 dark:text-emerald-400">MEHR — Ehson qayd etildi</span>
           <h4 id="receiptAmount" class="text-3xl font-extrabold mt-1">50 000 sōm</h4>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ehsoningiz uçun taşakkur! Mablaḡ "MEHR" şaffof reyestriga muvaffaqiyatli qayd etildi.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ehsoningiz uçun taşakkur! Ōtkazma «Mening ehsonlarim» rōyxatiga yozib qōyildi.</p>
         </div>
         <dl id="receiptDetails" class="text-left text-xs rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 divide-y divide-slate-200 dark:divide-slate-700"></dl>
         <div class="grid grid-cols-2 gap-3">
